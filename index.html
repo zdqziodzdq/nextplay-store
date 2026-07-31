@@ -85,6 +85,8 @@ footer{background:var(--panel);border-top:1px solid var(--line);padding:60px 0 2
 }
 @media(max-width:480px){
   .footer-grid{grid-template-columns:1fr;}
+  .console-mock{display:none;}
+  .hero-img{display:block!important;max-width:100%;max-height:400px;object-fit:contain;}
 }
 
 </style>
@@ -110,7 +112,7 @@ footer{background:var(--panel);border-top:1px solid var(--line);padding:60px 0 2
 .joycon{width:15%;height:88%;border-radius:16px;}
 .joycon.left{background:linear-gradient(180deg,var(--joy-blue),#0089a3);}
 .joycon.right{background:linear-gradient(180deg,var(--joy-red),#b32340);}
-.screen{flex:1;height:88%;margin:0 10px;border-radius:8px;background:#0a0b0e;display:flex;align-items:center;justify-content:center;border:1px solid #2b2e38;}
+.screen{flex:1;height:88%;margin:0 10px;border-radius:8px;background:url('./switch2-scene.png') center/cover no-repeat #0a0b0e;display:flex;align-items:center;justify-content:center;border:1px solid #2b2e38;}
 .screen-logo{font-size:11px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;}
 
 /* SPECS */
@@ -310,9 +312,10 @@ footer{background:var(--panel);border-top:1px solid var(--line);padding:60px 0 2
       <div class="trust-mini" style="margin-top:8px;">Livraison gratuite J+2 · Garantie constructeur Nintendo</div>
     </div>
     <div class="hero-visual">
+      <img src="./switch2-box.png" alt="Nintendo Switch 2" loading="lazy" style="display:none;" class="hero-img">
       <div class="console-mock">
         <div class="joycon left"></div>
-        <div class="screen"><div class="screen-logo">Switch 2</div></div>
+        <div class="screen"></div>
         <div class="joycon right"></div>
       </div>
     </div>
