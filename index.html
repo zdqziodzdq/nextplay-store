@@ -350,7 +350,7 @@ footer{background:var(--panel);border-top:1px solid var(--line);padding:60px 0 2
       </div>
       <div class="eyebrow" style="margin-bottom:16px;">En stock — expédition 24h</div>
 
-      <button class="btn-primary" onclick="openModal()">Commander maintenant</button>
+      <button type="button" class="btn-primary" style="position:relative;z-index:50;" onclick="openModal()" ontouchend="openModal()">Commander maintenant</button>
       <div class="revolut-badge">
         <span class="rb-icon">Re<span>volut</span></span>
         Paiement 100% sécurisé · CB, Apple Pay, Google Pay
