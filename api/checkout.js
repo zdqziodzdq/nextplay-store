@@ -5,13 +5,18 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
-
-  const { prenom, nom, email, tel, adresse, cp, ville } = req.body;
-
+  
+  const { prenom, nom, email, tel, adresse, cp, ville, amount } = req.body;
+  
   if (!prenom || !nom || !email || !adresse || !cp || !ville) {
     return res.status(400).json({ error: 'Champs manquants' });
   }
-
+  
+  // Valider le montant (doit être > 0)
+  if (!amount || amount <= 0) {
+    return res.status(400).json({ error: 'Montant invalide' });
+  }
+  
   try {
     const response = await fetch('https://merchant.revolut.com/api/orders', {
       method: 'POST',
@@ -21,7 +26,7 @@ export default async function handler(req, res) {
         'Revolut-Api-Version': '2024-09-01'
       },
       body: JSON.stringify({
-        amount: 29900, // 299€ en centimes
+        amount: amount, // Utilise le montant du frontend (100 = 1€, 29900 = 299€)
         currency: 'EUR',
         customer_email: email,
         shipping_address: {
@@ -40,20 +45,18 @@ export default async function handler(req, res) {
         description: 'Nintendo Switch 2 — Pack complet'
       })
     });
-
+    
     const order = await response.json();
-
     if (!response.ok) {
       console.error('Revolut error:', order);
       return res.status(500).json({ error: 'Erreur création commande', details: order });
     }
-
+    
     // Retourne l'URL de checkout Revolut
     return res.status(200).json({
       checkout_url: order.checkout_url,
       order_id: order.id
     });
-
   } catch (err) {
     console.error('Server error:', err);
     return res.status(500).json({ error: 'Erreur serveur' });
