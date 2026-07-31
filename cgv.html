@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conditions Générales de Vente — NEXTPLAY</title>
+<style>
+:root{
+  --ink:#0d0e12;--panel:#15171d;--panel2:#1c1f27;--paper:#f3f1ea;
+  --joy-blue:#00c3e3;--joy-red:#ff3c5c;--line:rgba(243,241,234,0.1);--muted:#9a9ea8;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--ink);color:var(--paper);font-family:'Helvetica Neue',Arial,sans-serif;line-height:1.6;overflow-x:hidden;}
+h1,h2,h3{font-family:'Arial Black',Impact,sans-serif;letter-spacing:-0.02em;text-transform:uppercase;}
+a{color:inherit;text-decoration:none;}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px;}
+
+/* HEADER */
+header{position:sticky;top:0;z-index:50;background:rgba(13,14,18,0.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;gap:16px;}
+.logo{font-size:20px;font-weight:900;letter-spacing:0.02em;flex-shrink:0;}
+.logo span{color:var(--joy-blue);}
+.nav-links{display:flex;gap:28px;font-size:13px;letter-spacing:0.05em;text-transform:uppercase;color:var(--muted);}
+.nav-links a:hover{color:var(--paper);}
+.nav-right{display:flex;align-items:center;gap:12px;}
+.nav-cta{background:var(--joy-red);color:#fff;padding:10px 20px;border-radius:2px;font-size:13px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;cursor:pointer;border:none;white-space:nowrap;}
+
+/* HAMBURGER */
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:6px;}
+.hamburger span{display:block;width:22px;height:2px;background:var(--paper);border-radius:2px;transition:all .25s ease;}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.hamburger.open span:nth-child(2){opacity:0;}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
+/* MOBILE MENU */
+#mobile-menu{
+  display:none;position:fixed;top:57px;left:0;right:0;background:var(--panel);
+  border-bottom:1px solid var(--line);z-index:49;padding:20px 24px;flex-direction:column;gap:0;
+}
+#mobile-menu.open{display:flex;}
+#mobile-menu a{display:block;padding:14px 0;font-size:15px;border-bottom:1px solid var(--line);color:var(--paper);text-transform:uppercase;letter-spacing:0.05em;}
+#mobile-menu a:last-child{border-bottom:none;}
+#mobile-menu a:hover{color:var(--joy-blue);}
+
+/* PAGE CONTENT */
+.page-hero{padding:60px 0 40px;border-bottom:1px solid var(--line);}
+.page-hero .section-tag{font-size:12px;letter-spacing:.15em;text-transform:uppercase;color:var(--joy-blue);margin-bottom:10px;}
+.page-hero h1{font-size:38px;line-height:1;}
+.page-body{padding:60px 0 80px;max-width:800px;}
+.page-body h2{font-size:20px;margin:36px 0 12px;color:var(--joy-blue);}
+.page-body h3{font-size:16px;margin:24px 0 8px;font-family:inherit;font-weight:700;text-transform:none;}
+.page-body p{font-size:15px;color:rgba(243,241,234,.85);margin-bottom:14px;line-height:1.7;}
+.page-body ul{list-style:none;margin-bottom:14px;}
+.page-body ul li{font-size:15px;color:rgba(243,241,234,.85);padding:5px 0 5px 18px;position:relative;}
+.page-body ul li::before{content:"—";position:absolute;left:0;color:var(--joy-blue);}
+.page-body .note{font-size:13px;color:var(--muted);background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin-top:16px;}
+
+/* FOOTER */
+footer{background:var(--panel);border-top:1px solid var(--line);padding:60px 0 24px;}
+.footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:40px;margin-bottom:50px;}
+.footer-col h4{font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:16px;font-family:inherit;}
+.footer-col a{display:block;font-size:14px;color:var(--paper);opacity:.8;margin-bottom:10px;}
+.footer-col a:hover{opacity:1;color:var(--joy-blue);}
+.footer-logo{font-size:22px;font-weight:900;margin-bottom:14px;}
+.footer-logo span{color:var(--joy-blue);}
+.footer-desc{font-size:13px;color:var(--muted);max-width:280px;}
+.payment-icons{display:flex;gap:10px;margin-top:20px;}
+.payment-icons div{font-size:10px;padding:6px 10px;border:1px solid var(--line);border-radius:4px;color:var(--muted);}
+.footer-bottom{border-top:1px solid var(--line);padding-top:24px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:12px;color:var(--muted);}
+
+/* FORM */
+.form-group{display:flex;flex-direction:column;gap:6px;margin-bottom:16px;}
+.form-group label{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);}
+.form-group input,.form-group select,.form-group textarea{background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:12px 14px;color:var(--paper);font-size:14px;outline:none;transition:border .15s;width:100%;font-family:inherit;}
+.form-group textarea{min-height:120px;resize:vertical;}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--joy-blue);}
+.btn-primary{background:var(--joy-red);color:#fff;padding:16px 32px;font-weight:800;font-size:14px;letter-spacing:.05em;text-transform:uppercase;border-radius:3px;border:none;cursor:pointer;transition:transform .15s,background .15s;display:inline-block;}
+.btn-primary:hover{transform:translateY(-2px);background:#e6314f;}
+
+@media(max-width:900px){
+  .nav-links{display:none;}
+  .hamburger{display:flex;}
+  .footer-grid{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:480px){
+  .footer-grid{grid-template-columns:1fr;}
+}
+
+</style>
+</head>
+<body>
+<header>
+  <div class="nav wrap">
+    <a href="index.html" class="logo">NEXT<span>PLAY</span></a>
+    <nav class="nav-links"><a href="index.html#specs">Fiche technique</a><a href="index.html#bundle">Le pack</a><a href="contact.html">Contact</a></nav>
+    <div class="nav-right">
+      <a href="index.html" class="nav-cta">Commander</a>
+      <button class="hamburger" id="hamburger-btn"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+<div id="mobile-menu">
+  <a href="index.html">🏠 Accueil</a><a href="livraison-retours.html">Livraison & retours</a>
+  <a href="suivi-commande.html">Suivre ma commande</a><a href="contact.html">Support client</a>
+  <a href="cgv.html">Conditions générales</a><a href="mentions-legales.html">Mentions légales</a>
+</div>
+
+<div class="page-hero wrap">
+  <div class="section-tag">Légal</div>
+  <h1>Conditions Générales de Vente</h1>
+</div>
+
+<div class="wrap page-body">
+  <p style="color:var(--muted);font-size:13px;">Dernière mise à jour : juillet 2026</p>
+
+  <h2>Article 1 — Identification du vendeur</h2>
+  <p>Le site NEXTPLAY est exploité par un revendeur indépendant agissant en qualité de micro-entrepreneur, domicilié en France. Contact : <a href="mailto:contact@nextplay-store.fr" style="color:var(--joy-blue);">contact@nextplay-store.fr</a>. NEXTPLAY n'est pas affilié à Nintendo Co., Ltd. ni à aucune de ses filiales.</p>
+
+  <h2>Article 2 — Objet</h2>
+  <p>Les présentes Conditions Générales de Vente (CGV) régissent les ventes de produits effectuées via le site nextplay-store.fr entre NEXTPLAY (le vendeur) et tout acheteur (le client) pour tout achat effectué sur le site.</p>
+
+  <h2>Article 3 — Produits</h2>
+  <p>Les produits proposés à la vente sont décrits avec la plus grande exactitude possible. Les photographies et visuels présents sur le site sont donnés à titre indicatif. Tous les produits vendus sont neufs, scellés d'origine et bénéficient de la garantie légale de conformité.</p>
+
+  <h2>Article 4 — Prix</h2>
+  <p>Les prix sont affichés en euros TTC (toutes taxes comprises). NEXTPLAY se réserve le droit de modifier ses prix à tout moment, les prix applicables étant ceux en vigueur au moment de la validation de la commande.</p>
+
+  <h2>Article 5 — Commande</h2>
+  <p>Toute commande passée sur le site vaut acceptation des présentes CGV. La commande est définitivement enregistrée après confirmation de paiement. Un email de confirmation est envoyé au client.</p>
+  <p>NEXTPLAY se réserve le droit d'annuler toute commande en cas de rupture de stock, d'erreur de prix manifeste ou de suspicion de fraude, avec remboursement intégral du client.</p>
+
+  <h2>Article 6 — Paiement</h2>
+  <p>Le paiement s'effectue en ligne, de manière sécurisée. Les moyens de paiement acceptés sont : carte bancaire Visa, Mastercard, CB. Le débit est effectué au moment de la validation de la commande.</p>
+
+  <h2>Article 7 — Livraison</h2>
+  <p>Les modalités de livraison sont détaillées dans la <a href="livraison-retours.html" style="color:var(--joy-blue);">page Livraison & Retours</a>. Le transfert des risques de perte ou de détérioration du produit s'effectue à la livraison au client.</p>
+
+  <h2>Article 8 — Droit de rétractation</h2>
+  <p>Conformément à l'article L221-18 du Code de la consommation, le client dispose d'un délai de 14 jours calendaires à compter de la réception du produit pour exercer son droit de rétractation. Les conditions détaillées sont disponibles dans la <a href="livraison-retours.html" style="color:var(--joy-blue);">page Livraison & Retours</a>.</p>
+
+  <h2>Article 9 — Garanties légales</h2>
+  <p>Tous les produits bénéficient de la garantie légale de conformité (articles L217-4 à L217-14 du Code de la consommation) et de la garantie contre les vices cachés (articles 1641 à 1649 du Code civil).</p>
+  <p>La garantie légale de conformité est de <strong>2 ans</strong> à compter de la livraison du produit. En cas de défaut de conformité, le client peut choisir entre réparation et remplacement du produit.</p>
+
+  <h2>Article 10 — Données personnelles</h2>
+  <p>Les données collectées lors de la commande (nom, prénom, adresse, email, téléphone) sont utilisées uniquement pour le traitement et la livraison de la commande. Elles ne sont pas cédées à des tiers, conformément au RGPD. Le client dispose d'un droit d'accès, de rectification et de suppression en contactant <a href="mailto:contact@nextplay-store.fr" style="color:var(--joy-blue);">contact@nextplay-store.fr</a>.</p>
+
+  <h2>Article 11 — Litiges</h2>
+  <p>En cas de litige, une solution amiable sera recherchée en priorité. Le client peut également recourir à la plateforme de médiation européenne disponible sur <a href="https://ec.europa.eu/consumers/odr" style="color:var(--joy-blue);" target="_blank">ec.europa.eu/consumers/odr</a>.</p>
+  <p>En l'absence de résolution amiable, les tribunaux français seront compétents.</p>
+
+  <h2>Article 12 — Droit applicable</h2>
+  <p>Les présentes CGV sont soumises au droit français.</p>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-col"><div class="footer-logo">NEXT<span>PLAY</span></div><p class="footer-desc">Boutique en ligne spécialisée dans les consoles de nouvelle génération.</p></div>
+      <div class="footer-col"><h4>Boutique</h4><a href="index.html">Accueil</a><a href="index.html#bundle">Le pack</a></div>
+      <div class="footer-col"><h4>Infos</h4><a href="livraison-retours.html">Livraison & retours</a><a href="cgv.html">CGV</a><a href="mentions-legales.html">Mentions légales</a></div>
+      <div class="footer-col"><h4>Contact</h4><a href="suivi-commande.html">Suivre ma commande</a><a href="contact.html">Support client</a></div>
+    </div>
+    <div class="footer-bottom"><div>© 2026 NEXTPLAY.</div><div>Revendeur indépendant, sans lien avec Nintendo Co., Ltd.</div></div>
+  </div>
+</footer>
+<script>
+const btn=document.getElementById('hamburger-btn'),menu=document.getElementById('mobile-menu');
+btn.addEventListener('click',()=>{btn.classList.toggle('open');menu.classList.toggle('open');});
+menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{btn.classList.remove('open');menu.classList.remove('open');}));
+</script>
+</body></html>

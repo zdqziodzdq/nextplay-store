@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Support Client — NEXTPLAY</title>
+<style>
+:root{
+  --ink:#0d0e12;--panel:#15171d;--panel2:#1c1f27;--paper:#f3f1ea;
+  --joy-blue:#00c3e3;--joy-red:#ff3c5c;--line:rgba(243,241,234,0.1);--muted:#9a9ea8;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--ink);color:var(--paper);font-family:'Helvetica Neue',Arial,sans-serif;line-height:1.6;overflow-x:hidden;}
+h1,h2,h3{font-family:'Arial Black',Impact,sans-serif;letter-spacing:-0.02em;text-transform:uppercase;}
+a{color:inherit;text-decoration:none;}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px;}
+
+/* HEADER */
+header{position:sticky;top:0;z-index:50;background:rgba(13,14,18,0.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;gap:16px;}
+.logo{font-size:20px;font-weight:900;letter-spacing:0.02em;flex-shrink:0;}
+.logo span{color:var(--joy-blue);}
+.nav-links{display:flex;gap:28px;font-size:13px;letter-spacing:0.05em;text-transform:uppercase;color:var(--muted);}
+.nav-links a:hover{color:var(--paper);}
+.nav-right{display:flex;align-items:center;gap:12px;}
+.nav-cta{background:var(--joy-red);color:#fff;padding:10px 20px;border-radius:2px;font-size:13px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;cursor:pointer;border:none;white-space:nowrap;}
+
+/* HAMBURGER */
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:6px;}
+.hamburger span{display:block;width:22px;height:2px;background:var(--paper);border-radius:2px;transition:all .25s ease;}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.hamburger.open span:nth-child(2){opacity:0;}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
+/* MOBILE MENU */
+#mobile-menu{
+  display:none;position:fixed;top:57px;left:0;right:0;background:var(--panel);
+  border-bottom:1px solid var(--line);z-index:49;padding:20px 24px;flex-direction:column;gap:0;
+}
+#mobile-menu.open{display:flex;}
+#mobile-menu a{display:block;padding:14px 0;font-size:15px;border-bottom:1px solid var(--line);color:var(--paper);text-transform:uppercase;letter-spacing:0.05em;}
+#mobile-menu a:last-child{border-bottom:none;}
+#mobile-menu a:hover{color:var(--joy-blue);}
+
+/* PAGE CONTENT */
+.page-hero{padding:60px 0 40px;border-bottom:1px solid var(--line);}
+.page-hero .section-tag{font-size:12px;letter-spacing:.15em;text-transform:uppercase;color:var(--joy-blue);margin-bottom:10px;}
+.page-hero h1{font-size:38px;line-height:1;}
+.page-body{padding:60px 0 80px;max-width:800px;}
+.page-body h2{font-size:20px;margin:36px 0 12px;color:var(--joy-blue);}
+.page-body h3{font-size:16px;margin:24px 0 8px;font-family:inherit;font-weight:700;text-transform:none;}
+.page-body p{font-size:15px;color:rgba(243,241,234,.85);margin-bottom:14px;line-height:1.7;}
+.page-body ul{list-style:none;margin-bottom:14px;}
+.page-body ul li{font-size:15px;color:rgba(243,241,234,.85);padding:5px 0 5px 18px;position:relative;}
+.page-body ul li::before{content:"—";position:absolute;left:0;color:var(--joy-blue);}
+.page-body .note{font-size:13px;color:var(--muted);background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin-top:16px;}
+
+/* FOOTER */
+footer{background:var(--panel);border-top:1px solid var(--line);padding:60px 0 24px;}
+.footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:40px;margin-bottom:50px;}
+.footer-col h4{font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:16px;font-family:inherit;}
+.footer-col a{display:block;font-size:14px;color:var(--paper);opacity:.8;margin-bottom:10px;}
+.footer-col a:hover{opacity:1;color:var(--joy-blue);}
+.footer-logo{font-size:22px;font-weight:900;margin-bottom:14px;}
+.footer-logo span{color:var(--joy-blue);}
+.footer-desc{font-size:13px;color:var(--muted);max-width:280px;}
+.payment-icons{display:flex;gap:10px;margin-top:20px;}
+.payment-icons div{font-size:10px;padding:6px 10px;border:1px solid var(--line);border-radius:4px;color:var(--muted);}
+.footer-bottom{border-top:1px solid var(--line);padding-top:24px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:12px;color:var(--muted);}
+
+/* FORM */
+.form-group{display:flex;flex-direction:column;gap:6px;margin-bottom:16px;}
+.form-group label{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);}
+.form-group input,.form-group select,.form-group textarea{background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:12px 14px;color:var(--paper);font-size:14px;outline:none;transition:border .15s;width:100%;font-family:inherit;}
+.form-group textarea{min-height:120px;resize:vertical;}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--joy-blue);}
+.btn-primary{background:var(--joy-red);color:#fff;padding:16px 32px;font-weight:800;font-size:14px;letter-spacing:.05em;text-transform:uppercase;border-radius:3px;border:none;cursor:pointer;transition:transform .15s,background .15s;display:inline-block;}
+.btn-primary:hover{transform:translateY(-2px);background:#e6314f;}
+
+@media(max-width:900px){
+  .nav-links{display:none;}
+  .hamburger{display:flex;}
+  .footer-grid{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:480px){
+  .footer-grid{grid-template-columns:1fr;}
+}
+
+</style>
+<style>
+.contact-grid{display:grid;grid-template-columns:1fr 1.4fr;gap:60px;align-items:start;padding:60px 0 80px;}
+.contact-info h2{font-size:24px;margin-bottom:20px;}
+.info-card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:22px;margin-bottom:16px;}
+.info-card .ic-label{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:8px;}
+.info-card .ic-val{font-size:15px;font-weight:600;}
+.info-card .ic-val a{color:var(--joy-blue);}
+.info-card .ic-note{font-size:12px;color:var(--muted);margin-top:6px;}
+.form-card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:32px;}
+.form-card h2{font-size:22px;margin-bottom:6px;}
+.form-card .sub{font-size:13px;color:var(--muted);margin-bottom:24px;}
+#contact-success{display:none;text-align:center;padding:30px 0;}
+#contact-success .s-icon{font-size:40px;margin-bottom:12px;}
+#contact-success h3{font-size:20px;margin-bottom:8px;}
+#contact-success p{color:var(--muted);font-size:14px;}
+@media(max-width:900px){.contact-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<header>
+  <div class="nav wrap">
+    <a href="index.html" class="logo">NEXT<span>PLAY</span></a>
+    <nav class="nav-links"><a href="index.html#specs">Fiche technique</a><a href="index.html#bundle">Le pack</a><a href="index.html#faq">FAQ</a></nav>
+    <div class="nav-right">
+      <a href="index.html" class="nav-cta">Commander</a>
+      <button class="hamburger" id="hamburger-btn"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+<div id="mobile-menu">
+  <a href="index.html">🏠 Accueil</a><a href="index.html#faq">FAQ</a>
+  <a href="livraison-retours.html">Livraison & retours</a>
+  <a href="suivi-commande.html">Suivre ma commande</a><a href="contact.html">Support client</a>
+  <a href="cgv.html">Conditions générales</a><a href="mentions-legales.html">Mentions légales</a>
+</div>
+
+<div class="page-hero wrap">
+  <div class="section-tag">Aide</div>
+  <h1>Support Client</h1>
+</div>
+
+<div class="wrap contact-grid">
+  <div class="contact-info">
+    <h2>On est là.</h2>
+    <p style="color:var(--muted);font-size:14px;margin-bottom:24px;">Une question sur ta commande, un problème à signaler ? On répond sous 24h.</p>
+
+    <div class="info-card">
+      <div class="ic-label">📧 Email</div>
+      <div class="ic-val"><a href="mailto:contact@nextplay-store.fr">contact@nextplay-store.fr</a></div>
+      <div class="ic-note">Réponse sous 24h ouvrables</div>
+    </div>
+    <div class="info-card">
+      <div class="ic-label">📦 Suivi de commande</div>
+      <div class="ic-val"><a href="suivi-commande.html" style="color:var(--joy-blue);">Suivre ma commande →</a></div>
+      <div class="ic-note">Entrez votre numéro de commande pour le statut en temps réel</div>
+    </div>
+    <div class="info-card">
+      <div class="ic-label">⏱ Horaires</div>
+      <div class="ic-val">Lun – Ven, 9h – 18h</div>
+      <div class="ic-note">Les messages du week-end sont traités le lundi</div>
+    </div>
+    <div class="info-card">
+      <div class="ic-label">↩ Retours</div>
+      <div class="ic-val">14 jours — produit non ouvert</div>
+      <div class="ic-note"><a href="livraison-retours.html" style="color:var(--joy-blue);">Voir la politique de retour complète</a></div>
+    </div>
+  </div>
+
+  <div class="form-card">
+    <div id="contact-form-view">
+      <h2>Envoie-nous un message</h2>
+      <p class="sub">Remplis le formulaire et on revient vers toi rapidement.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+        <div class="form-group"><label>Prénom</label><input id="c-prenom" type="text" placeholder="Jean"></div>
+        <div class="form-group"><label>Nom</label><input id="c-nom" type="text" placeholder="Dupont"></div>
+      </div>
+      <div class="form-group"><label>Email</label><input id="c-email" type="email" placeholder="jean@email.fr"></div>
+      <div class="form-group">
+        <label>Sujet</label>
+        <select id="c-sujet">
+          <option value="">— Sélectionne un sujet —</option>
+          <option>Suivi de commande</option>
+          <option>Problème de livraison</option>
+          <option>Retour / remboursement</option>
+          <option>Produit défectueux</option>
+          <option>Question avant commande</option>
+          <option>Autre</option>
+        </select>
+      </div>
+      <div class="form-group"><label>N° de commande (si applicable)</label><input id="c-commande" type="text" placeholder="NP-2026-XXXXX"></div>
+      <div class="form-group"><label>Message</label><textarea id="c-message" placeholder="Décris ton problème ou ta question en détail…"></textarea></div>
+      <button class="btn-primary" style="width:100%;text-align:center;padding:16px;" onclick="submitContact()">Envoyer le message →</button>
+    </div>
+    <div id="contact-success">
+      <div class="s-icon">✅</div>
+      <h3>Message envoyé !</h3>
+      <p>On a bien reçu ton message et on te répondra sous 24h ouvrables à l'adresse indiquée.</p>
+      <a href="index.html" class="btn-primary" style="margin-top:20px;display:inline-block;">Retour à l'accueil</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-col"><div class="footer-logo">NEXT<span>PLAY</span></div><p class="footer-desc">Boutique en ligne spécialisée dans les consoles de nouvelle génération.</p></div>
+      <div class="footer-col"><h4>Boutique</h4><a href="index.html">Accueil</a><a href="index.html#bundle">Le pack</a></div>
+      <div class="footer-col"><h4>Infos</h4><a href="livraison-retours.html">Livraison & retours</a><a href="cgv.html">CGV</a><a href="mentions-legales.html">Mentions légales</a></div>
+      <div class="footer-col"><h4>Contact</h4><a href="suivi-commande.html">Suivre ma commande</a><a href="contact.html">Support client</a></div>
+    </div>
+    <div class="footer-bottom"><div>© 2026 NEXTPLAY.</div><div>Revendeur indépendant, sans lien avec Nintendo Co., Ltd.</div></div>
+  </div>
+</footer>
+<script>
+const btn=document.getElementById('hamburger-btn'),menu=document.getElementById('mobile-menu');
+btn.addEventListener('click',()=>{btn.classList.toggle('open');menu.classList.toggle('open');});
+menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{btn.classList.remove('open');menu.classList.remove('open');}));
+function submitContact(){
+  const p=document.getElementById('c-prenom').value.trim();
+  const n=document.getElementById('c-nom').value.trim();
+  const e=document.getElementById('c-email').value.trim();
+  const s=document.getElementById('c-sujet').value;
+  const m=document.getElementById('c-message').value.trim();
+  if(!p||!n||!e||!s||!m){alert('Merci de remplir tous les champs obligatoires.');return;}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)){alert('Email invalide.');return;}
+  document.getElementById('contact-form-view').style.display='none';
+  document.getElementById('contact-success').style.display='block';
+}
+</script>
+</body></html>

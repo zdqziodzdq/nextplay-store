@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Suivi de Commande — NEXTPLAY</title>
+<style>
+:root{
+  --ink:#0d0e12;--panel:#15171d;--panel2:#1c1f27;--paper:#f3f1ea;
+  --joy-blue:#00c3e3;--joy-red:#ff3c5c;--line:rgba(243,241,234,0.1);--muted:#9a9ea8;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--ink);color:var(--paper);font-family:'Helvetica Neue',Arial,sans-serif;line-height:1.6;overflow-x:hidden;}
+h1,h2,h3{font-family:'Arial Black',Impact,sans-serif;letter-spacing:-0.02em;text-transform:uppercase;}
+a{color:inherit;text-decoration:none;}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px;}
+
+/* HEADER */
+header{position:sticky;top:0;z-index:50;background:rgba(13,14,18,0.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;gap:16px;}
+.logo{font-size:20px;font-weight:900;letter-spacing:0.02em;flex-shrink:0;}
+.logo span{color:var(--joy-blue);}
+.nav-links{display:flex;gap:28px;font-size:13px;letter-spacing:0.05em;text-transform:uppercase;color:var(--muted);}
+.nav-links a:hover{color:var(--paper);}
+.nav-right{display:flex;align-items:center;gap:12px;}
+.nav-cta{background:var(--joy-red);color:#fff;padding:10px 20px;border-radius:2px;font-size:13px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;cursor:pointer;border:none;white-space:nowrap;}
+
+/* HAMBURGER */
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:6px;}
+.hamburger span{display:block;width:22px;height:2px;background:var(--paper);border-radius:2px;transition:all .25s ease;}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.hamburger.open span:nth-child(2){opacity:0;}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
+/* MOBILE MENU */
+#mobile-menu{
+  display:none;position:fixed;top:57px;left:0;right:0;background:var(--panel);
+  border-bottom:1px solid var(--line);z-index:49;padding:20px 24px;flex-direction:column;gap:0;
+}
+#mobile-menu.open{display:flex;}
+#mobile-menu a{display:block;padding:14px 0;font-size:15px;border-bottom:1px solid var(--line);color:var(--paper);text-transform:uppercase;letter-spacing:0.05em;}
+#mobile-menu a:last-child{border-bottom:none;}
+#mobile-menu a:hover{color:var(--joy-blue);}
+
+/* PAGE CONTENT */
+.page-hero{padding:60px 0 40px;border-bottom:1px solid var(--line);}
+.page-hero .section-tag{font-size:12px;letter-spacing:.15em;text-transform:uppercase;color:var(--joy-blue);margin-bottom:10px;}
+.page-hero h1{font-size:38px;line-height:1;}
+.page-body{padding:60px 0 80px;max-width:800px;}
+.page-body h2{font-size:20px;margin:36px 0 12px;color:var(--joy-blue);}
+.page-body h3{font-size:16px;margin:24px 0 8px;font-family:inherit;font-weight:700;text-transform:none;}
+.page-body p{font-size:15px;color:rgba(243,241,234,.85);margin-bottom:14px;line-height:1.7;}
+.page-body ul{list-style:none;margin-bottom:14px;}
+.page-body ul li{font-size:15px;color:rgba(243,241,234,.85);padding:5px 0 5px 18px;position:relative;}
+.page-body ul li::before{content:"—";position:absolute;left:0;color:var(--joy-blue);}
+.page-body .note{font-size:13px;color:var(--muted);background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin-top:16px;}
+
+/* FOOTER */
+footer{background:var(--panel);border-top:1px solid var(--line);padding:60px 0 24px;}
+.footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:40px;margin-bottom:50px;}
+.footer-col h4{font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:16px;font-family:inherit;}
+.footer-col a{display:block;font-size:14px;color:var(--paper);opacity:.8;margin-bottom:10px;}
+.footer-col a:hover{opacity:1;color:var(--joy-blue);}
+.footer-logo{font-size:22px;font-weight:900;margin-bottom:14px;}
+.footer-logo span{color:var(--joy-blue);}
+.footer-desc{font-size:13px;color:var(--muted);max-width:280px;}
+.payment-icons{display:flex;gap:10px;margin-top:20px;}
+.payment-icons div{font-size:10px;padding:6px 10px;border:1px solid var(--line);border-radius:4px;color:var(--muted);}
+.footer-bottom{border-top:1px solid var(--line);padding-top:24px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:12px;color:var(--muted);}
+
+/* FORM */
+.form-group{display:flex;flex-direction:column;gap:6px;margin-bottom:16px;}
+.form-group label{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);}
+.form-group input,.form-group select,.form-group textarea{background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:12px 14px;color:var(--paper);font-size:14px;outline:none;transition:border .15s;width:100%;font-family:inherit;}
+.form-group textarea{min-height:120px;resize:vertical;}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--joy-blue);}
+.btn-primary{background:var(--joy-red);color:#fff;padding:16px 32px;font-weight:800;font-size:14px;letter-spacing:.05em;text-transform:uppercase;border-radius:3px;border:none;cursor:pointer;transition:transform .15s,background .15s;display:inline-block;}
+.btn-primary:hover{transform:translateY(-2px);background:#e6314f;}
+
+@media(max-width:900px){
+  .nav-links{display:none;}
+  .hamburger{display:flex;}
+  .footer-grid{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:480px){
+  .footer-grid{grid-template-columns:1fr;}
+}
+
+</style>
+<style>
+.suivi-wrap{max-width:620px;margin:60px auto 80px;padding:0 24px;}
+.suivi-card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:36px 32px;text-align:center;}
+.suivi-card h2{font-size:24px;margin-bottom:8px;}
+.suivi-card .sub{color:var(--muted);font-size:14px;margin-bottom:32px;}
+.suivi-input-row{display:flex;gap:12px;}
+.suivi-input-row input{flex:1;background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:14px 16px;color:var(--paper);font-size:15px;outline:none;transition:border .15s;}
+.suivi-input-row input:focus{border-color:var(--joy-blue);}
+.suivi-input-row button{background:var(--joy-blue);color:var(--ink);border:none;border-radius:6px;padding:14px 22px;font-weight:800;font-size:14px;cursor:pointer;white-space:nowrap;transition:opacity .15s;}
+.suivi-input-row button:hover{opacity:.85;}
+#suivi-result{margin-top:32px;display:none;text-align:left;}
+.status-header{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:20px;margin-bottom:24px;}
+.status-header .sh-label{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:8px;}
+.status-header .sh-num{font-size:18px;font-weight:800;font-family:'Arial Black',sans-serif;color:var(--joy-blue);}
+.status-header .sh-prod{font-size:14px;color:var(--muted);margin-top:4px;}
+.timeline{position:relative;padding-left:28px;}
+.timeline::before{content:"";position:absolute;left:8px;top:8px;bottom:8px;width:2px;background:var(--line);}
+.tl-step{position:relative;margin-bottom:28px;}
+.tl-step:last-child{margin-bottom:0;}
+.tl-dot{position:absolute;left:-24px;top:4px;width:14px;height:14px;border-radius:50%;border:2px solid var(--line);background:var(--panel2);transition:all .3s;}
+.tl-step.done .tl-dot{background:var(--joy-blue);border-color:var(--joy-blue);box-shadow:0 0 8px rgba(0,195,227,.4);}
+.tl-step.active .tl-dot{background:var(--joy-red);border-color:var(--joy-red);box-shadow:0 0 8px rgba(255,60,92,.5);}
+.tl-title{font-size:14px;font-weight:700;margin-bottom:3px;}
+.tl-step.done .tl-title,.tl-step.active .tl-title{color:var(--paper);}
+.tl-step:not(.done):not(.active) .tl-title{color:var(--muted);}
+.tl-date{font-size:12px;color:var(--muted);}
+.tl-step.active .tl-date{color:var(--joy-red);}
+.delivery-eta{background:rgba(91,227,138,.08);border:1px solid rgba(91,227,138,.25);border-radius:10px;padding:18px 20px;margin-top:24px;display:flex;align-items:center;gap:14px;}
+.delivery-eta .de-icon{font-size:24px;}
+.delivery-eta .de-label{font-size:12px;color:var(--muted);}
+.delivery-eta .de-date{font-size:17px;font-weight:800;color:#5be38a;font-family:'Arial Black',sans-serif;}
+#suivi-error{margin-top:20px;display:none;color:var(--joy-red);font-size:14px;background:rgba(255,60,92,.08);border:1px solid rgba(255,60,92,.2);border-radius:8px;padding:14px 16px;}
+@media(max-width:500px){.suivi-input-row{flex-direction:column;}.suivi-card{padding:24px 18px;}}
+</style>
+</head>
+<body>
+<header>
+  <div class="nav wrap">
+    <a href="index.html" class="logo">NEXT<span>PLAY</span></a>
+    <nav class="nav-links"><a href="index.html#specs">Fiche technique</a><a href="index.html#bundle">Le pack</a><a href="contact.html">Contact</a></nav>
+    <div class="nav-right">
+      <a href="index.html" class="nav-cta">Commander</a>
+      <button class="hamburger" id="hamburger-btn"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+<div id="mobile-menu">
+  <a href="index.html">🏠 Accueil</a><a href="index.html#faq">FAQ</a>
+  <a href="livraison-retours.html">Livraison & retours</a>
+  <a href="suivi-commande.html">Suivre ma commande</a><a href="contact.html">Support client</a>
+  <a href="cgv.html">Conditions générales</a><a href="mentions-legales.html">Mentions légales</a>
+</div>
+
+<div class="page-hero wrap">
+  <div class="section-tag">Mon compte</div>
+  <h1>Suivi de Commande</h1>
+</div>
+
+<div class="suivi-wrap">
+  <div class="suivi-card">
+    <h2>Où est ma commande ?</h2>
+    <p class="sub">Entre ton numéro de commande (reçu par email) pour voir le statut en temps réel.</p>
+    <div class="suivi-input-row">
+      <input id="suivi-input" type="text" placeholder="Ex : NP-2026-00142" oninput="this.value=this.value.toUpperCase()">
+      <button onclick="rechercherCommande()">Rechercher</button>
+    </div>
+    <div id="suivi-error">❌ Numéro de commande introuvable. Vérifie l'email de confirmation ou <a href="contact.html" style="color:var(--joy-blue);">contacte le support</a>.</div>
+
+    <div id="suivi-result">
+      <div class="status-header">
+        <div class="sh-label">Commande</div>
+        <div class="sh-num" id="res-num"></div>
+        <div class="sh-prod">Nintendo Switch 2 — Pack complet</div>
+      </div>
+      <div class="timeline" id="res-timeline"></div>
+      <div class="delivery-eta" id="res-eta">
+        <div class="de-icon">📦</div>
+        <div>
+          <div class="de-label">Livraison estimée</div>
+          <div class="de-date" id="res-date"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:24px;text-align:center;">
+    <p style="font-size:13px;color:var(--muted);">Pas de numéro de commande ? <a href="contact.html" style="color:var(--joy-blue);">Contacte le support →</a></p>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-col"><div class="footer-logo">NEXT<span>PLAY</span></div><p class="footer-desc">Boutique en ligne spécialisée dans les consoles de nouvelle génération.</p></div>
+      <div class="footer-col"><h4>Boutique</h4><a href="index.html">Accueil</a><a href="index.html#bundle">Le pack</a></div>
+      <div class="footer-col"><h4>Infos</h4><a href="livraison-retours.html">Livraison & retours</a><a href="cgv.html">CGV</a><a href="mentions-legales.html">Mentions légales</a></div>
+      <div class="footer-col"><h4>Contact</h4><a href="suivi-commande.html">Suivre ma commande</a><a href="contact.html">Support client</a></div>
+    </div>
+    <div class="footer-bottom"><div>© 2026 NEXTPLAY.</div><div>Revendeur indépendant, sans lien avec Nintendo Co., Ltd.</div></div>
+  </div>
+</footer>
+
+<script>
+const btn=document.getElementById('hamburger-btn'),menu=document.getElementById('mobile-menu');
+btn.addEventListener('click',()=>{btn.classList.toggle('open');menu.classList.toggle('open');});
+menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{btn.classList.remove('open');menu.classList.remove('open');}));
+
+// Simulation de suivi — à brancher sur ton backend
+function getJ2(){
+  const now=new Date();
+  let exped=new Date(now);
+  if(now.getHours()>=14) exped.setDate(exped.getDate()+1);
+  while(exped.getDay()===0||exped.getDay()===6) exped.setDate(exped.getDate()+1);
+  let ouvrables=0,cursor=new Date(exped);
+  while(ouvrables<2){cursor.setDate(cursor.getDate()+1);const d=cursor.getDay();if(d!==0&&d!==6)ouvrables++;}
+  const jours=['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'];
+  const mois=['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+  return `${jours[cursor.getDay()]} ${cursor.getDate()} ${mois[cursor.getMonth()]}`;
+}
+
+function rechercherCommande(){
+  const val=document.getElementById('suivi-input').value.trim();
+  const err=document.getElementById('suivi-error');
+  const res=document.getElementById('suivi-result');
+  err.style.display='none'; res.style.display='none';
+  if(!val){ alert('Entre un numéro de commande.'); return; }
+  // Accepte tout format NP-XXXX pour la démo
+  if(!val.startsWith('NP-')){
+    err.style.display='block'; return;
+  }
+  // Simulation selon la longueur du numéro (démo)
+  const seed=val.length % 3;
+  const scenarios=[
+    [
+      {label:'Commande confirmée',date:'Aujourd\'hui — 09h41',state:'done'},
+      {label:'En préparation',date:'Aujourd\'hui — 11h00',state:'done'},
+      {label:'Expédiée',date:'Aujourd\'hui — 16h30',state:'active'},
+      {label:'En cours de livraison',date:'Demain',state:''},
+      {label:'Livrée',date:getJ2(),state:''},
+    ],
+    [
+      {label:'Commande confirmée',date:'Hier — 14h22',state:'done'},
+      {label:'En préparation',date:'Aujourd\'hui — 08h00',state:'done'},
+      {label:'Expédiée',date:'Aujourd\'hui — 10h15',state:'done'},
+      {label:'En cours de livraison',date:'Aujourd\'hui',state:'active'},
+      {label:'Livrée',date:getJ2(),state:''},
+    ],
+    [
+      {label:'Commande confirmée',date:'Il y a 2 jours',state:'done'},
+      {label:'En préparation',date:'Il y a 2 jours',state:'done'},
+      {label:'Expédiée',date:'Il y a 1 jour',state:'done'},
+      {label:'En cours de livraison',date:'Il y a 1 jour',state:'done'},
+      {label:'Livrée',date:'Aujourd\'hui — 13h47 ✅',state:'done'},
+    ]
+  ];
+  const steps=scenarios[seed];
+  document.getElementById('res-num').textContent=val;
+  const tl=document.getElementById('res-timeline');
+  tl.innerHTML='';
+  steps.forEach(s=>{
+    const div=document.createElement('div');
+    div.className=`tl-step ${s.state}`;
+    div.innerHTML=`<div class="tl-dot"></div><div class="tl-title">${s.label}</div><div class="tl-date">${s.date}</div>`;
+    tl.appendChild(div);
+  });
+  document.getElementById('res-date').textContent=getJ2();
+  if(seed===2) document.getElementById('res-eta').style.display='none';
+  else document.getElementById('res-eta').style.display='flex';
+  res.style.display='block';
+}
+
+// Permettre la recherche avec Entrée
+document.getElementById('suivi-input').addEventListener('keydown',e=>{ if(e.key==='Enter') rechercherCommande(); });
+</script>
+</body></html>

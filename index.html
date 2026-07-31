@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXTPLAY — Nintendo Switch 2 en stock</title>
+<style>
+:root{
+  --ink:#0d0e12;--panel:#15171d;--panel2:#1c1f27;--paper:#f3f1ea;
+  --joy-blue:#00c3e3;--joy-red:#ff3c5c;--line:rgba(243,241,234,0.1);--muted:#9a9ea8;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--ink);color:var(--paper);font-family:'Helvetica Neue',Arial,sans-serif;line-height:1.6;overflow-x:hidden;}
+h1,h2,h3{font-family:'Arial Black',Impact,sans-serif;letter-spacing:-0.02em;text-transform:uppercase;}
+a{color:inherit;text-decoration:none;}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px;}
+
+/* HEADER */
+header{position:sticky;top:0;z-index:50;background:rgba(13,14,18,0.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;gap:16px;}
+.logo{font-size:20px;font-weight:900;letter-spacing:0.02em;flex-shrink:0;}
+.logo span{color:var(--joy-blue);}
+.nav-links{display:flex;gap:28px;font-size:13px;letter-spacing:0.05em;text-transform:uppercase;color:var(--muted);}
+.nav-links a:hover{color:var(--paper);}
+.nav-right{display:flex;align-items:center;gap:12px;}
+.nav-cta{background:var(--joy-red);color:#fff;padding:10px 20px;border-radius:2px;font-size:13px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;cursor:pointer;border:none;white-space:nowrap;}
+
+/* HAMBURGER */
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:6px;}
+.hamburger span{display:block;width:22px;height:2px;background:var(--paper);border-radius:2px;transition:all .25s ease;}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.hamburger.open span:nth-child(2){opacity:0;}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
+/* MOBILE MENU */
+#mobile-menu{
+  display:none;position:fixed;top:57px;left:0;right:0;background:var(--panel);
+  border-bottom:1px solid var(--line);z-index:49;padding:20px 24px;flex-direction:column;gap:0;
+}
+#mobile-menu.open{display:flex;}
+#mobile-menu a{display:block;padding:14px 0;font-size:15px;border-bottom:1px solid var(--line);color:var(--paper);text-transform:uppercase;letter-spacing:0.05em;}
+#mobile-menu a:last-child{border-bottom:none;}
+#mobile-menu a:hover{color:var(--joy-blue);}
+
+/* PAGE CONTENT */
+.page-hero{padding:60px 0 40px;border-bottom:1px solid var(--line);}
+.page-hero .section-tag{font-size:12px;letter-spacing:.15em;text-transform:uppercase;color:var(--joy-blue);margin-bottom:10px;}
+.page-hero h1{font-size:38px;line-height:1;}
+.page-body{padding:60px 0 80px;max-width:800px;}
+.page-body h2{font-size:20px;margin:36px 0 12px;color:var(--joy-blue);}
+.page-body h3{font-size:16px;margin:24px 0 8px;font-family:inherit;font-weight:700;text-transform:none;}
+.page-body p{font-size:15px;color:rgba(243,241,234,.85);margin-bottom:14px;line-height:1.7;}
+.page-body ul{list-style:none;margin-bottom:14px;}
+.page-body ul li{font-size:15px;color:rgba(243,241,234,.85);padding:5px 0 5px 18px;position:relative;}
+.page-body ul li::before{content:"—";position:absolute;left:0;color:var(--joy-blue);}
+.page-body .note{font-size:13px;color:var(--muted);background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin-top:16px;}
+
+/* FOOTER */
+footer{background:var(--panel);border-top:1px solid var(--line);padding:60px 0 24px;}
+.footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:40px;margin-bottom:50px;}
+.footer-col h4{font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:16px;font-family:inherit;}
+.footer-col a{display:block;font-size:14px;color:var(--paper);opacity:.8;margin-bottom:10px;}
+.footer-col a:hover{opacity:1;color:var(--joy-blue);}
+.footer-logo{font-size:22px;font-weight:900;margin-bottom:14px;}
+.footer-logo span{color:var(--joy-blue);}
+.footer-desc{font-size:13px;color:var(--muted);max-width:280px;}
+.payment-icons{display:flex;gap:10px;margin-top:20px;}
+.payment-icons div{font-size:10px;padding:6px 10px;border:1px solid var(--line);border-radius:4px;color:var(--muted);}
+.footer-bottom{border-top:1px solid var(--line);padding-top:24px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:12px;color:var(--muted);}
+
+/* FORM */
+.form-group{display:flex;flex-direction:column;gap:6px;margin-bottom:16px;}
+.form-group label{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);}
+.form-group input,.form-group select,.form-group textarea{background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:12px 14px;color:var(--paper);font-size:14px;outline:none;transition:border .15s;width:100%;font-family:inherit;}
+.form-group textarea{min-height:120px;resize:vertical;}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--joy-blue);}
+.btn-primary{background:var(--joy-red);color:#fff;padding:16px 32px;font-weight:800;font-size:14px;letter-spacing:.05em;text-transform:uppercase;border-radius:3px;border:none;cursor:pointer;transition:transform .15s,background .15s;display:inline-block;}
+.btn-primary:hover{transform:translateY(-2px);background:#e6314f;}
+
+@media(max-width:900px){
+  .nav-links{display:none;}
+  .hamburger{display:flex;}
+  .footer-grid{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:480px){
+  .footer-grid{grid-template-columns:1fr;}
+}
+
+</style>
+<style>
+/* HERO */
+.hero{position:relative;padding:90px 0 70px;border-bottom:1px solid var(--line);overflow:hidden;}
+.hero::before{content:"";position:absolute;top:-200px;right:-150px;width:600px;height:600px;background:radial-gradient(circle,var(--joy-blue),transparent 70%);opacity:0.15;filter:blur(20px);}
+.hero::after{content:"";position:absolute;bottom:-250px;left:-100px;width:500px;height:500px;background:radial-gradient(circle,var(--joy-red),transparent 70%);opacity:0.12;filter:blur(20px);}
+.hero-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:60px;align-items:center;position:relative;}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--joy-blue);border:1px solid var(--joy-blue);padding:6px 12px;border-radius:100px;margin-bottom:24px;}
+.eyebrow::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--joy-blue);box-shadow:0 0 8px var(--joy-blue);}
+.hero h1{font-size:56px;line-height:.98;margin-bottom:20px;}
+.hero h1 .accent{color:var(--joy-blue);}
+.hero p.lead{color:var(--muted);font-size:17px;max-width:460px;margin-bottom:28px;}
+.price-row{display:flex;align-items:baseline;gap:14px;margin-bottom:10px;flex-wrap:wrap;}
+.price-now{font-size:42px;font-weight:900;font-family:'Arial Black',sans-serif;}
+.price-old{font-size:20px;color:var(--muted);text-decoration:line-through;}
+.badge-stock{font-size:13px;color:#5be38a;font-weight:700;}
+.urgency{margin-bottom:24px;font-size:12px;color:#ff9a3c;}
+.trust-mini{font-size:12px;color:var(--muted);margin-top:12px;}
+.hero-visual{position:relative;aspect-ratio:1/1;border-radius:16px;background:linear-gradient(155deg,var(--panel2),var(--panel));border:1px solid var(--line);display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.console-mock{width:78%;aspect-ratio:16/10;background:linear-gradient(135deg,#2b2e38,#15171d);border-radius:22px;border:2px solid #34384a;display:flex;align-items:center;justify-content:space-between;padding:14px;box-shadow:0 30px 60px rgba(0,0,0,.5);}
+.joycon{width:15%;height:88%;border-radius:16px;}
+.joycon.left{background:linear-gradient(180deg,var(--joy-blue),#0089a3);}
+.joycon.right{background:linear-gradient(180deg,var(--joy-red),#b32340);}
+.screen{flex:1;height:88%;margin:0 10px;border-radius:8px;background:#0a0b0e;display:flex;align-items:center;justify-content:center;border:1px solid #2b2e38;}
+.screen-logo{font-size:11px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;}
+
+/* SPECS */
+.specs{padding:80px 0;border-bottom:1px solid var(--line);}
+.section-tag{font-size:12px;letter-spacing:.15em;text-transform:uppercase;color:var(--joy-blue);margin-bottom:10px;}
+.specs h2,.bundle h2,.reviews h2,.faq h2,.final-cta h2{font-size:34px;margin-bottom:40px;}
+.spec-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden;}
+.spec-card{background:var(--panel);padding:28px 24px;}
+.spec-card .num{font-size:12px;color:var(--muted);letter-spacing:.1em;margin-bottom:14px;}
+.spec-card h3{font-size:15px;text-transform:none;font-family:inherit;font-weight:700;margin-bottom:8px;}
+.spec-card p{font-size:13px;color:var(--muted);line-height:1.6;}
+
+/* BUNDLE */
+.bundle{padding:80px 0;border-bottom:1px solid var(--line);}
+.bundle-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start;}
+.bundle-visual{aspect-ratio:4/3;border-radius:14px;background:linear-gradient(160deg,var(--panel2),var(--panel));border:1px solid var(--line);display:grid;place-items:center;}
+.bundle-visual span{font-size:13px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;}
+.bundle-list{list-style:none;margin-top:20px;display:flex;flex-direction:column;gap:10px;}
+.bundle-list li{display:flex;gap:12px;font-size:14px;color:rgba(243,241,234,.85);}
+.bundle-list li::before{content:"✓";color:#5be38a;font-weight:900;flex-shrink:0;}
+.dims-box{margin-top:24px;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:16px;}
+.dims-box .dims-title{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:10px;}
+.dims-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.dims-grid span{font-size:12px;color:var(--muted);}
+.dims-grid strong{font-size:13px;color:var(--paper);}
+
+/* REVIEWS */
+.reviews{padding:80px 0;border-bottom:1px solid var(--line);}
+.review-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+.review-card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:24px;}
+.stars{color:#ffb238;font-size:14px;margin-bottom:12px;}
+.review-card p{font-size:14px;opacity:.85;margin-bottom:16px;}
+.review-name{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;}
+
+/* FAQ */
+.faq{padding:80px 0;border-bottom:1px solid var(--line);}
+.faq-item{border-top:1px solid var(--line);padding:22px 0;cursor:pointer;}
+.faq-item:last-child{border-bottom:1px solid var(--line);}
+.faq-q{display:flex;justify-content:space-between;align-items:center;font-weight:700;font-size:16px;}
+.faq-q .plus{color:var(--joy-blue);font-size:20px;transition:transform .2s;}
+.faq-item.open .plus{transform:rotate(45deg);}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .3s;color:var(--muted);font-size:14px;}
+.faq-item.open .faq-a{max-height:300px;padding-top:14px;}
+
+/* FINAL CTA */
+.final-cta{padding:90px 0;text-align:center;}
+.final-cta p{color:var(--muted);margin-bottom:32px;}
+
+/* MODAL */
+#modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:200;display:none;align-items:center;justify-content:center;padding:16px;}
+#modal-overlay.open{display:flex;}
+#modal-box{background:var(--panel);border:1px solid var(--line);border-radius:14px;width:100%;max-width:560px;max-height:92vh;overflow-y:auto;padding:36px 32px;position:relative;}
+.modal-close{position:absolute;top:18px;right:20px;background:none;border:none;color:var(--muted);font-size:22px;cursor:pointer;}
+.modal-close:hover{color:var(--paper);}
+#modal-box h2{font-size:22px;margin-bottom:6px;}
+.modal-sub{font-size:13px;color:var(--muted);margin-bottom:24px;}
+.order-recap{background:rgba(0,195,227,.07);border:1px solid rgba(0,195,227,.2);border-radius:10px;padding:18px 20px;margin-bottom:24px;display:flex;justify-content:space-between;align-items:center;}
+.recap-name{font-size:14px;font-weight:700;}
+.recap-price{font-size:20px;font-weight:900;font-family:'Arial Black',sans-serif;color:var(--joy-blue);}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.addr-wrap{position:relative;}
+#address-suggestions{position:absolute;background:var(--panel2);border:1px solid var(--line);border-radius:8px;left:0;right:0;top:calc(100% + 4px);z-index:999;overflow:hidden;display:none;}
+#address-suggestions.open{display:block;}
+.addr-item{padding:12px 14px;font-size:14px;cursor:pointer;border-bottom:1px solid var(--line);}
+.addr-item:last-child{border-bottom:none;}
+.addr-item:hover{background:rgba(0,195,227,.1);color:var(--joy-blue);}
+.delivery-box{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin:16px 0 20px;}
+.dl-title{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:8px;}
+.dl-date{font-size:18px;font-weight:800;color:#5be38a;font-family:'Arial Black',sans-serif;}
+.dl-detail{font-size:12px;color:var(--muted);margin-top:4px;}
+.delivery-badge{display:inline-flex;align-items:center;gap:6px;margin-top:8px;font-size:12px;color:#5be38a;font-weight:700;}
+.delivery-badge::before{content:"";width:6px;height:6px;border-radius:50%;background:#5be38a;}
+#modal-success{display:none;text-align:center;padding:20px 0;}
+#modal-success .s-icon{font-size:52px;margin-bottom:16px;}
+#modal-success h3{font-size:24px;margin-bottom:10px;}
+#modal-success p{color:var(--muted);font-size:14px;}
+
+@media(max-width:900px){
+  .hero-grid,.bundle-grid{grid-template-columns:1fr;}
+  .hero h1{font-size:38px;}
+  .spec-grid{grid-template-columns:repeat(2,1fr);}
+  .review-grid{grid-template-columns:1fr;}
+  .form-row{grid-template-columns:1fr;}
+  #modal-box{padding:28px 20px;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav wrap">
+    <a href="index.html" class="logo">NEXT<span>PLAY</span></a>
+    <nav class="nav-links">
+      <a href="#specs">Fiche technique</a>
+      <a href="#bundle">Le pack</a>
+      <a href="#avis">Avis</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <div class="nav-right">
+      <button class="nav-cta" onclick="openModal()">Commander</button>
+      <button class="hamburger" id="hamburger-btn" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+<div id="mobile-menu">
+  <a href="index.html">🏠 Accueil</a>
+  <a href="#specs">Fiche technique</a>
+  <a href="#bundle">Le pack</a>
+  <a href="#avis">Avis clients</a>
+  <a href="#faq">FAQ</a>
+  <a href="livraison-retours.html">Livraison & retours</a>
+  <a href="suivi-commande.html">Suivre ma commande</a>
+  <a href="contact.html">Support client</a>
+  <a href="cgv.html">Conditions générales</a>
+  <a href="mentions-legales.html">Mentions légales</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">En stock — expédition 24h</div>
+      <h1>La nouvelle<br>Switch 2<span class="accent">.</span><br>Prête à jouer.</h1>
+      <p class="lead">Écran 7,9 pouces, jusqu'à 4K, 120 ips, Joy-Con magnétiques. La console qui fait tout, partout.</p>
+      <div class="price-row">
+        <div class="price-now">299 €</div>
+        <div class="price-old">469 €</div>
+        <div class="badge-stock">● 12 unités disponibles</div>
+      </div>
+      <div class="urgency">⚠ Tarif officiel passe à 499,99 € le 1ᵉʳ septembre 2026 — profites-en maintenant.</div>
+      <button class="btn-primary" onclick="openModal()">Commander maintenant</button>
+      <div class="trust-mini">Livraison gratuite J+2 · Paiement sécurisé · Garantie constructeur</div>
+    </div>
+    <div class="hero-visual">
+      <div class="console-mock">
+        <div class="joycon left"></div>
+        <div class="screen"><div class="screen-logo">Switch 2</div></div>
+        <div class="joycon right"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SPECS -->
+<section class="specs" id="specs">
+  <div class="wrap">
+    <div class="section-tag">Fiche technique officielle</div>
+    <h2>Tout ce qu'il y a sous le capot.</h2>
+    <div class="spec-grid">
+      <div class="spec-card">
+        <div class="num">01</div>
+        <h3>Écran</h3>
+        <p>7,9 pouces LCD HD, HDR, jusqu'à 120 ips. Même épaisseur que la Switch originale.</p>
+      </div>
+      <div class="spec-card">
+        <div class="num">02</div>
+        <h3>Résolution TV</h3>
+        <p>Jusqu'à 4K* (60 ips) via la station d'accueil. Nécessite un TV compatible 4K.</p>
+      </div>
+      <div class="spec-card">
+        <div class="num">03</div>
+        <h3>Joy-Con 2</h3>
+        <p>Fixation magnétique, mode souris optique sur surfaces planes, compatible deux à la fois.</p>
+      </div>
+      <div class="spec-card">
+        <div class="num">04</div>
+        <h3>GameChat</h3>
+        <p>Discussion vocale intégrée, partage d'écran, micro intégré. Inclus avec Nintendo Switch Online.</p>
+      </div>
+      <div class="spec-card">
+        <div class="num">05</div>
+        <h3>Stockage</h3>
+        <p>256 Go de mémoire interne. Extension via cartes microSD Express uniquement.</p>
+      </div>
+      <div class="spec-card">
+        <div class="num">06</div>
+        <h3>Dimensions</h3>
+        <p>166 × 272 × 13,9 mm avec Joy-Con. Poids : 534 g. Support inclinable 150°.</p>
+      </div>
+      <div class="spec-card">
+        <div class="num">07</div>
+        <h3>Connectique</h3>
+        <p>Deux ports USB-C (haut et bas) pour charger en mode table ou TV sans contrainte.</p>
+      </div>
+      <div class="spec-card">
+        <div class="num">08</div>
+        <h3>Compatibilité</h3>
+        <p>Compatible avec les jeux Nintendo Switch. Certains titres peuvent nécessiter une mise à jour.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BUNDLE -->
+<section class="bundle" id="bundle">
+  <div class="wrap bundle-grid">
+    <div class="bundle-visual"><span>Photo du pack</span></div>
+    <div>
+      <div class="section-tag">Contenu de la boîte</div>
+      <h2>Rien à racheter.</h2>
+      <ul class="bundle-list">
+        <li>Console Nintendo Switch 2 (256 Go)</li>
+        <li>Joy-Con 2 (G) + Joy-Con 2 (D) avec dragonnes</li>
+        <li>Station d'accueil Nintendo Switch 2</li>
+        <li>Support Joy-Con 2</li>
+        <li>Adaptateur secteur Nintendo Switch 2</li>
+        <li>Câble HDMI™ ultra haute vitesse</li>
+        <li>Notice d'informations importantes</li>
+      </ul>
+      <div class="dims-box">
+        <div class="dims-title">Caractéristiques physiques</div>
+        <div class="dims-grid">
+          <span>Dimensions</span><strong>166 × 272 × 13,9 mm</strong>
+          <span>Poids (avec Joy-Con)</span><strong>534 g</strong>
+          <span>Poids (console seule)</span><strong>410 g</strong>
+          <span>Stockage interne</span><strong>256 Go</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="reviews" id="avis">
+  <div class="wrap">
+    <div class="section-tag">Ils ont commandé</div>
+    <h2>Avis clients.</h2>
+    <div class="review-grid">
+      <div class="review-card"><div class="stars">★★★★★</div><p>Reçue en 2 jours, emballage nickel, tout fonctionne parfaitement dès l'allumage.</p><div class="review-name">— Julien R.</div></div>
+      <div class="review-card"><div class="stars">★★★★★</div><p>Prix imbattable par rapport aux revendeurs officiels, livraison rapide et soignée.</p><div class="review-name">— Sarah M.</div></div>
+      <div class="review-card"><div class="stars">★★★★☆</div><p>Très contente, livraison un poil plus longue que prévu mais le produit est parfait.</p><div class="review-name">— Karim D.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq" id="faq">
+  <div class="wrap">
+    <div class="section-tag">Questions fréquentes</div>
+    <h2>Encore un doute ?</h2>
+    <div style="margin-top:32px;">
+      <div class="faq-item"><div class="faq-q"><span>La console est-elle neuve et sous garantie ?</span><span class="plus">+</span></div><div class="faq-a">Oui, chaque console est neuve et scellée d'origine. La garantie constructeur Nintendo est incluse.</div></div>
+      <div class="faq-item"><div class="faq-q"><span>Quelle carte mémoire est compatible ?</span><span class="plus">+</span></div><div class="faq-a">La Switch 2 est uniquement compatible avec les cartes microSD Express — pas les microSD classiques ou microSDXC. Pense à bien vérifier avant d'acheter une carte séparément.</div></div>
+      <div class="faq-item"><div class="faq-q"><span>Mes anciens jeux Switch fonctionnent-ils ?</span><span class="plus">+</span></div><div class="faq-a">La plupart des jeux Nintendo Switch (physiques et numériques) sont compatibles. Certains titres peuvent ne pas être entièrement compatibles — Nintendo publie la liste sur son site.</div></div>
+      <div class="faq-item"><div class="faq-q"><span>Quels sont les délais de livraison ?</span><span class="plus">+</span></div><div class="faq-a">Livraison gratuite en J+2 ouvrables partout en France métropolitaine, avec numéro de suivi Colissimo.</div></div>
+      <div class="faq-item"><div class="faq-q"><span>Puis-je retourner la console ?</span><span class="plus">+</span></div><div class="faq-a">Oui, retour possible sous 14 jours si le produit n'a pas été descellé ou utilisé, conformément au droit de rétractation légal.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final-cta" id="commander">
+  <div class="wrap">
+    <h2>Stock limité. On te la garde ?</h2>
+    <p>299 € livrée, garantie incluse, expédiée sous 24h — avant le passage à 499,99 € le 1ᵉʳ septembre 2026.</p>
+    <button class="btn-primary" onclick="openModal()">Commander ma Switch 2</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <div class="footer-logo">NEXT<span>PLAY</span></div>
+        <p class="footer-desc">Boutique en ligne spécialisée dans les consoles de nouvelle génération, livrées rapidement partout en France.</p>
+        <div class="payment-icons"><div>CB</div><div>Visa</div><div>Mastercard</div></div>
+      </div>
+      <div class="footer-col">
+        <h4>Boutique</h4>
+        <a href="#specs">Fiche technique</a>
+        <a href="#bundle">Le pack</a>
+        <a href="#avis">Avis clients</a>
+      </div>
+      <div class="footer-col">
+        <h4>Infos</h4>
+        <a href="#faq">FAQ</a>
+        <a href="livraison-retours.html">Livraison & retours</a>
+        <a href="cgv.html">Conditions générales</a>
+        <a href="mentions-legales.html">Mentions légales</a>
+      </div>
+      <div class="footer-col">
+        <h4>Mon compte</h4>
+        <a href="suivi-commande.html">Suivre ma commande</a>
+        <a href="contact.html">Support client</a>
+        <a href="mailto:contact@nextplay-store.fr">contact@nextplay-store.fr</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2026 NEXTPLAY. Tous droits réservés.</div>
+      <div>Revendeur indépendant, sans lien avec Nintendo Co., Ltd.</div>
+    </div>
+  </div>
+</footer>
+
+<!-- MODAL COMMANDE -->
+<div id="modal-overlay" onclick="handleOverlayClick(event)">
+  <div id="modal-box">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div id="modal-form-view">
+      <h2>Finalise ta commande</h2>
+      <p class="modal-sub">Remplis tes coordonnées, on s'occupe du reste.</p>
+      <div class="order-recap">
+        <div><div class="recap-name">Nintendo Switch 2 — Pack complet</div><div style="font-size:12px;color:var(--muted);margin-top:4px;">Livraison gratuite Colissimo</div></div>
+        <div class="recap-price">299 €</div>
+      </div>
+      <div class="form-row" style="margin-bottom:0;">
+        <div class="form-group"><label>Prénom</label><input id="f-prenom" type="text" placeholder="Jean" autocomplete="given-name"></div>
+        <div class="form-group"><label>Nom</label><input id="f-nom" type="text" placeholder="Dupont" autocomplete="family-name"></div>
+      </div>
+      <div class="form-group"><label>Email</label><input id="f-email" type="email" placeholder="jean@email.fr" autocomplete="email"></div>
+      <div class="form-group"><label>Téléphone</label><input id="f-tel" type="tel" placeholder="06 12 34 56 78" autocomplete="tel"></div>
+      <div class="form-group">
+        <label>Adresse postale</label>
+        <div class="addr-wrap">
+          <input id="f-adresse" type="text" placeholder="Commence à taper ton adresse…" autocomplete="off">
+          <div id="address-suggestions"></div>
+        </div>
+      </div>
+      <div class="form-row" style="margin-bottom:0;">
+        <div class="form-group"><label>Code postal</label><input id="f-cp" type="text" placeholder="69000" autocomplete="postal-code"></div>
+        <div class="form-group"><label>Ville</label><input id="f-ville" type="text" placeholder="Lyon" autocomplete="address-level2"></div>
+      </div>
+      <div class="delivery-box">
+        <div class="dl-title">📦 Livraison estimée — Colissimo gratuit</div>
+        <div class="dl-date" id="delivery-date">—</div>
+        <div class="dl-detail" id="delivery-detail"></div>
+        <div class="delivery-badge">Livraison gratuite · Suivi inclus</div>
+      </div>
+      <button class="btn-primary" style="width:100%;text-align:center;padding:18px;" onclick="submitOrder()">Confirmer ma commande →</button>
+      <div style="font-size:11px;color:var(--muted);text-align:center;margin-top:12px;">🔒 Paiement sécurisé · Données protégées · Retour 14 jours</div>
+    </div>
+    <div id="modal-success">
+      <div class="s-icon">🎮</div>
+      <h3>Commande confirmée !</h3>
+      <p>Un email de confirmation t'a été envoyé.<br>Ta Switch 2 sera livrée <strong id="success-date"></strong>.</p>
+      <a href="suivi-commande.html" class="btn-primary" style="margin-top:24px;display:inline-block;">Suivre ma commande</a>
+    </div>
+  </div>
+</div>
+
+<script>
+// HAMBURGER
+const hbtn = document.getElementById('hamburger-btn');
+const hmenu = document.getElementById('mobile-menu');
+hbtn.addEventListener('click',()=>{ hbtn.classList.toggle('open'); hmenu.classList.toggle('open'); });
+hmenu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{ hbtn.classList.remove('open'); hmenu.classList.remove('open'); }));
+
+// MODAL
+function openModal(){ document.getElementById('modal-overlay').classList.add('open'); document.body.style.overflow='hidden'; computeDeliveryDate(); }
+function closeModal(){ document.getElementById('modal-overlay').classList.remove('open'); document.body.style.overflow=''; setTimeout(()=>{ document.getElementById('modal-form-view').style.display='block'; document.getElementById('modal-success').style.display='none'; },300); }
+function handleOverlayClick(e){ if(e.target===document.getElementById('modal-overlay')) closeModal(); }
+
+// DATE LIVRAISON
+function computeDeliveryDate(){
+  const now = new Date();
+  const h = now.getHours();
+  let exped = new Date(now);
+  if(h >= 14) exped.setDate(exped.getDate()+1);
+  // sauter weekend pour expédition
+  while(exped.getDay()===0||exped.getDay()===6) exped.setDate(exped.getDate()+1);
+  let ouvrables=0, cursor=new Date(exped);
+  while(ouvrables<2){ cursor.setDate(cursor.getDate()+1); const d=cursor.getDay(); if(d!==0&&d!==6) ouvrables++; }
+  const jours=['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'];
+  const mois=['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+  const label=`${jours[cursor.getDay()]} ${cursor.getDate()} ${mois[cursor.getMonth()]}`;
+  document.getElementById('delivery-date').textContent=label;
+  document.getElementById('success-date').textContent=`le ${label}`;
+  document.getElementById('delivery-detail').textContent=h<14?'Commande avant 14h aujourd\'hui → expédition ce soir.':'Commande passée après 14h → expédition demain matin.';
+}
+
+// AUTOCOMPLETE
+let timer;
+document.getElementById('f-adresse').addEventListener('input',function(){
+  clearTimeout(timer);
+  if(this.value.trim().length<4){ closeSugg(); return; }
+  timer=setTimeout(()=>fetchAddr(this.value.trim()),220);
+});
+document.getElementById('f-adresse').addEventListener('blur',()=>setTimeout(closeSugg,180));
+async function fetchAddr(q){
+  try{
+    const r=await fetch(`https://api-adresse.data.gouv.fr/search/?q=${encodeURIComponent(q)}&limit=5&type=housenumber`);
+    const d=await r.json();
+    renderSugg(d.features||[]);
+  }catch(e){ closeSugg(); }
+}
+function renderSugg(features){
+  const box=document.getElementById('address-suggestions');
+  box.innerHTML='';
+  if(!features.length){ box.classList.remove('open'); return; }
+  features.forEach(f=>{
+    const div=document.createElement('div'); div.className='addr-item'; div.textContent=f.properties.label;
+    div.addEventListener('mousedown',()=>selectAddr(f.properties));
+    box.appendChild(div);
+  });
+  box.classList.add('open');
+}
+function selectAddr(p){ document.getElementById('f-adresse').value=p.name||''; document.getElementById('f-cp').value=p.postcode||''; document.getElementById('f-ville').value=p.city||''; closeSugg(); }
+function closeSugg(){ document.getElementById('address-suggestions').classList.remove('open'); }
+
+// SUBMIT
+function submitOrder(){
+  const fields=['f-prenom','f-nom','f-email','f-tel','f-adresse','f-cp','f-ville'];
+  if(fields.some(id=>!document.getElementById(id).value.trim())){ alert('Merci de remplir tous les champs.'); return; }
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(document.getElementById('f-email').value)){ alert('Email invalide.'); return; }
+  document.getElementById('modal-form-view').style.display='none';
+  document.getElementById('modal-success').style.display='block';
+}
+
+// FAQ
+document.querySelectorAll('.faq-item').forEach(item=>{
+  item.addEventListener('click',()=>{ const o=item.classList.contains('open'); document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open')); if(!o) item.classList.add('open'); });
+});
+</script>
+</body>
+</html>
