@@ -37,7 +37,7 @@ export default async function handler(req, res) {
           tel,
           adresse: `${adresse}, ${cp} ${ville}`
         },
-        description: 'Nintendo Switch 2 — Pack complet NEXTPLAY'
+        description: 'Nintendo Switch 2 — Pack complet'
       })
     });
 
