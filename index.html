@@ -514,12 +514,41 @@ function selectAddr(p){ document.getElementById('f-adresse').value=p.name||''; d
 function closeSugg(){ document.getElementById('address-suggestions').classList.remove('open'); }
 
 // SUBMIT
-function submitOrder(){
+async function submitOrder(){
   const fields=['f-prenom','f-nom','f-email','f-tel','f-adresse','f-cp','f-ville'];
   if(fields.some(id=>!document.getElementById(id).value.trim())){ alert('Merci de remplir tous les champs.'); return; }
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(document.getElementById('f-email').value)){ alert('Email invalide.'); return; }
-  document.getElementById('modal-form-view').style.display='none';
-  document.getElementById('modal-success').style.display='block';
+
+  const btn = document.querySelector('#modal-form-view .btn-primary');
+  btn.textContent = '⏳ Redirection vers le paiement…';
+  btn.disabled = true;
+  btn.style.opacity = '0.7';
+
+  try {
+    const res = await fetch('/api/checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        prenom: document.getElementById('f-prenom').value.trim(),
+        nom:    document.getElementById('f-nom').value.trim(),
+        email:  document.getElementById('f-email').value.trim(),
+        tel:    document.getElementById('f-tel').value.trim(),
+        adresse:document.getElementById('f-adresse').value.trim(),
+        cp:     document.getElementById('f-cp').value.trim(),
+        ville:  document.getElementById('f-ville').value.trim()
+      })
+    });
+
+    const data = await res.json();
+    if (!res.ok || !data.checkout_url) throw new Error(data.error || 'Erreur inconnue');
+    window.location.href = data.checkout_url;
+
+  } catch(err) {
+    btn.textContent = 'Confirmer ma commande →';
+    btn.disabled = false;
+    btn.style.opacity = '1';
+    alert('Erreur : ' + err.message + '\nRéessaie ou contacte le support.');
+  }
 }
 
 // FAQ
