@@ -188,6 +188,45 @@ footer{background:var(--panel);border-top:1px solid var(--line);padding:60px 0 2
 #modal-success h3{font-size:24px;margin-bottom:10px;}
 #modal-success p{color:var(--muted);font-size:14px;}
 
+
+/* COUNTDOWN */
+.countdown-bar{background:linear-gradient(90deg,rgba(255,60,92,.12),rgba(255,154,60,.08));border:1px solid rgba(255,154,60,.25);border-radius:8px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.countdown-label{font-size:12px;color:#ff9a3c;text-transform:uppercase;letter-spacing:.08em;}
+.countdown-timer{display:flex;gap:10px;align-items:center;}
+.cd-block{text-align:center;}
+.cd-num{font-size:22px;font-weight:900;font-family:'Arial Black',sans-serif;color:#ff9a3c;line-height:1;}
+.cd-unit{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);}
+.cd-sep{font-size:20px;color:#ff9a3c;font-weight:900;margin-bottom:8px;}
+
+/* STOCK BAR */
+.stock-bar-wrap{margin-bottom:20px;}
+.stock-label{display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px;}
+.stock-label .sl-left{color:#5be38a;font-weight:700;}
+.stock-label .sl-right{color:var(--muted);}
+.stock-bar{height:6px;background:var(--panel2);border-radius:100px;overflow:hidden;}
+.stock-fill{height:100%;background:linear-gradient(90deg,#5be38a,#00c3e3);border-radius:100px;transition:width 1s ease;}
+
+/* BADGE REVOLUT */
+.revolut-badge{display:inline-flex;align-items:center;gap:8px;margin-top:10px;font-size:12px;color:var(--muted);}
+.revolut-badge .rb-icon{background:#191c2b;border:1px solid rgba(255,255,255,.1);border-radius:4px;padding:3px 7px;font-size:11px;font-weight:800;color:#fff;letter-spacing:.02em;}
+.revolut-badge .rb-icon span{color:#60a5fa;}
+
+/* POURQUOI NOUS */
+.pourquoi{padding:80px 0;border-bottom:1px solid var(--line);}
+.pourquoi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:40px;}
+.pourquoi-card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:32px 28px;position:relative;overflow:hidden;}
+.pourquoi-card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;}
+.pourquoi-card:nth-child(1)::before{background:var(--joy-blue);}
+.pourquoi-card:nth-child(2)::before{background:var(--joy-red);}
+.pourquoi-card:nth-child(3)::before{background:#5be38a;}
+.pq-icon{font-size:32px;margin-bottom:16px;}
+.pq-title{font-size:18px;font-weight:900;font-family:'Arial Black',sans-serif;text-transform:uppercase;margin-bottom:10px;}
+.pq-desc{font-size:14px;color:var(--muted);line-height:1.6;}
+.pq-highlight{font-size:22px;font-weight:900;font-family:'Arial Black',sans-serif;margin-top:12px;}
+.pourquoi-card:nth-child(1) .pq-highlight{color:var(--joy-blue);}
+.pourquoi-card:nth-child(2) .pq-highlight{color:var(--joy-red);}
+.pourquoi-card:nth-child(3) .pq-highlight{color:#5be38a;}
+@media(max-width:900px){.pourquoi-grid{grid-template-columns:1fr;}.countdown-bar{flex-direction:column;}}
 @media(max-width:900px){
   .hero-grid,.bundle-grid{grid-template-columns:1fr;}
   .hero h1{font-size:38px;}
@@ -218,16 +257,13 @@ footer{background:var(--panel);border-top:1px solid var(--line);padding:60px 0 2
   </div>
 </header>
 <div id="mobile-menu">
-  <a href="index.html">🏠 Accueil</a>
+  <a href="index.html">Accueil</a>
   <a href="#specs">Fiche technique</a>
   <a href="#bundle">Le pack</a>
   <a href="#avis">Avis clients</a>
   <a href="#faq">FAQ</a>
-  <a href="livraison-retours.html">Livraison & retours</a>
   <a href="suivi-commande.html">Suivre ma commande</a>
   <a href="contact.html">Support client</a>
-  <a href="cgv.html">Conditions générales</a>
-  <a href="mentions-legales.html">Mentions légales</a>
 </div>
 
 <!-- HERO -->
@@ -240,11 +276,38 @@ footer{background:var(--panel);border-top:1px solid var(--line);padding:60px 0 2
       <div class="price-row">
         <div class="price-now">299 €</div>
         <div class="price-old">469 €</div>
-        <div class="badge-stock">● 12 unités disponibles</div>
       </div>
-      <div class="urgency">⚠ Tarif officiel passe à 499,99 € le 1ᵉʳ septembre 2026 — profites-en maintenant.</div>
+
+      <!-- COUNTDOWN -->
+      <div class="countdown-bar">
+        <div class="countdown-label">⚠ Prix garanti encore</div>
+        <div class="countdown-timer">
+          <div class="cd-block"><div class="cd-num" id="cd-j">00</div><div class="cd-unit">jours</div></div>
+          <div class="cd-sep">:</div>
+          <div class="cd-block"><div class="cd-num" id="cd-h">00</div><div class="cd-unit">heures</div></div>
+          <div class="cd-sep">:</div>
+          <div class="cd-block"><div class="cd-num" id="cd-m">00</div><div class="cd-unit">min</div></div>
+          <div class="cd-sep">:</div>
+          <div class="cd-block"><div class="cd-num" id="cd-s">00</div><div class="cd-unit">sec</div></div>
+        </div>
+        <div style="font-size:11px;color:var(--muted);">avant le passage à 499,99 €</div>
+      </div>
+
+      <!-- STOCK BAR -->
+      <div class="stock-bar-wrap">
+        <div class="stock-label">
+          <span class="sl-left">● <span id="stock-count">8</span> unités disponibles</span>
+          <span class="sl-right">Stock très limité</span>
+        </div>
+        <div class="stock-bar"><div class="stock-fill" id="stock-fill" style="width:67%"></div></div>
+      </div>
+
       <button class="btn-primary" onclick="openModal()">Commander maintenant</button>
-      <div class="trust-mini">Livraison gratuite J+2 · Paiement sécurisé · Garantie constructeur</div>
+      <div class="revolut-badge">
+        <span class="rb-icon">Re<span>volut</span></span>
+        Paiement 100% sécurisé · CB, Apple Pay, Google Pay
+      </div>
+      <div class="trust-mini" style="margin-top:8px;">Livraison gratuite J+2 · Garantie constructeur Nintendo</div>
     </div>
     <div class="hero-visual">
       <div class="console-mock">
@@ -348,6 +411,34 @@ footer{background:var(--panel);border-top:1px solid var(--line);padding:60px 0 2
   </div>
 </section>
 
+<!-- POURQUOI NOUS -->
+<section class="pourquoi">
+  <div class="wrap">
+    <div class="section-tag">Pourquoi acheter chez nous</div>
+    <h2>Simple. Rapide. Garanti.</h2>
+    <div class="pourquoi-grid">
+      <div class="pourquoi-card">
+        <div class="pq-icon">💰</div>
+        <div class="pq-title">Le meilleur prix</div>
+        <p class="pq-desc">299 € port inclus, alors que le tarif officiel grimpe à 499,99 € le 1er septembre. Autant économiser maintenant.</p>
+        <div class="pq-highlight">−170 €</div>
+      </div>
+      <div class="pourquoi-card">
+        <div class="pq-icon">⚡</div>
+        <div class="pq-title">Livraison express</div>
+        <p class="pq-desc">Commande avant 14h, expédition le soir même. Tu reçois ta console en J+2 ouvrables, partout en France. Gratuit.</p>
+        <div class="pq-highlight">J+2 offert</div>
+      </div>
+      <div class="pourquoi-card">
+        <div class="pq-icon">🛡️</div>
+        <div class="pq-title">Zéro risque</div>
+        <p class="pq-desc">Console neuve, scellée, avec garantie constructeur Nintendo. Paiement sécurisé via Revolut. Retour possible 14 jours.</p>
+        <div class="pq-highlight">Garantie 2 ans</div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- FAQ -->
 <section class="faq" id="faq">
   <div class="wrap">
@@ -367,8 +458,12 @@ footer{background:var(--panel);border-top:1px solid var(--line);padding:60px 0 2
 <section class="final-cta" id="commander">
   <div class="wrap">
     <h2>Stock limité. On te la garde ?</h2>
-    <p>299 € livrée, garantie incluse, expédiée sous 24h — avant le passage à 499,99 € le 1ᵉʳ septembre 2026.</p>
+    <p>299 € livrée, garantie incluse — <span id="stock-count-2">8</span> unités restantes avant le passage à 499,99 €.</p>
     <button class="btn-primary" onclick="openModal()">Commander ma Switch 2</button>
+    <div class="revolut-badge" style="justify-content:center;margin-top:16px;">
+      <span class="rb-icon">Re<span>volut</span></span>
+      Paiement sécurisé · CB, Apple Pay, Google Pay, Virement
+    </div>
   </div>
 </section>
 
@@ -541,6 +636,8 @@ async function submitOrder(){
 
     const data = await res.json();
     if (!res.ok || !data.checkout_url) throw new Error(data.error || 'Erreur inconnue');
+    decrementStock();
+    updateStockDisplay();
     window.location.href = data.checkout_url;
 
   } catch(err) {
@@ -555,6 +652,48 @@ async function submitOrder(){
 document.querySelectorAll('.faq-item').forEach(item=>{
   item.addEventListener('click',()=>{ const o=item.classList.contains('open'); document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open')); if(!o) item.classList.add('open'); });
 });
+
+// COUNTDOWN vers le 1er septembre 2026
+function updateCountdown(){
+  const target = new Date('2026-09-01T00:00:00');
+  const now = new Date();
+  const diff = target - now;
+  if(diff <= 0){
+    document.querySelectorAll('#cd-j,#cd-h,#cd-m,#cd-s').forEach(el=>el.textContent='00');
+    return;
+  }
+  const j = Math.floor(diff / 86400000);
+  const h = Math.floor((diff % 86400000) / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  const s = Math.floor((diff % 60000) / 1000);
+  const pad = n => String(n).padStart(2,'0');
+  document.getElementById('cd-j').textContent = pad(j);
+  document.getElementById('cd-h').textContent = pad(h);
+  document.getElementById('cd-m').textContent = pad(m);
+  document.getElementById('cd-s').textContent = pad(s);
+}
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+// STOCK dynamique (stocké dans localStorage, décrémenté à chaque commande)
+const STOCK_KEY = 'nextplay_stock';
+const STOCK_MAX = 12;
+function getStock(){
+  const s = parseInt(localStorage.getItem(STOCK_KEY));
+  return isNaN(s) ? 8 : Math.max(0, s);
+}
+function updateStockDisplay(){
+  const s = getStock();
+  document.querySelectorAll('#stock-count,#stock-count-2').forEach(el=>{ if(el) el.textContent = s; });
+  const pct = Math.round((s / STOCK_MAX) * 100);
+  const fill = document.getElementById('stock-fill');
+  if(fill) fill.style.width = pct + '%';
+}
+function decrementStock(){
+  const s = getStock();
+  if(s > 0) localStorage.setItem(STOCK_KEY, s - 1);
+}
+updateStockDisplay();
 </script>
 </body>
 </html>
