@@ -5,18 +5,24 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
-  
-  const { prenom, nom, email, tel, adresse, cp, ville, amount } = req.body;
-  
+
+  const {
+    prenom, nom, email, tel, adresse, cp, ville,
+    event_id, fbp, fbc            // ← envoyés par le pixel côté navigateur
+  } = req.body;
+
   if (!prenom || !nom || !email || !adresse || !cp || !ville) {
     return res.status(400).json({ error: 'Champs manquants' });
   }
-  
-  // Valider le montant (doit être > 0)
-  if (!amount || amount <= 0) {
-    return res.status(400).json({ error: 'Montant invalide' });
-  }
-  
+
+  // PRIX FIXÉ CÔTÉ SERVEUR — on n'écoute plus le montant envoyé par le navigateur.
+  // Pour un test à 1€ : ajoute la variable PRIX_CENTIMES = 100 sur Vercel, puis remets-la à 29900.
+  const PRIX_CENTIMES = Number(process.env.PRIX_CENTIMES || 29900);
+
+  // Infos techniques réclamées par Meta pour rattacher l'achat au clic sur la pub
+  const ip = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim();
+  const userAgent = String(req.headers['user-agent'] || '');
+
   try {
     const response = await fetch('https://merchant.revolut.com/api/orders', {
       method: 'POST',
@@ -26,33 +32,66 @@ export default async function handler(req, res) {
         'Revolut-Api-Version': '2024-09-01'
       },
       body: JSON.stringify({
-        amount: amount, // Utilise le montant du frontend (100 = 1€, 29900 = 299€)
+        amount: PRIX_CENTIMES,
         currency: 'EUR',
-        customer_email: email,
-        shipping_address: {
-          street_line_1: adresse,
-          city: ville,
-          postcode: cp,
-          country_code: 'FR'
+        description: 'Nintendo Switch 2 — Pack complet',
+
+        // Champ "customer" (et non customer_email, qui était ignoré par Revolut)
+        customer: {
+          full_name: `${prenom} ${nom}`,
+          email,
+          ...(tel ? { phone: tel } : {})
         },
+
+        // Champ "shipping" (et non shipping_address, ignoré lui aussi)
+        shipping: {
+          name: `${prenom} ${nom}`,
+          ...(tel ? { phone: tel } : {}),
+          address: {
+            street_line_1: adresse,
+            city: ville,
+            postcode: cp,
+            country_code: 'FR'
+          }
+        },
+
+        // Détail article : exigé par Revolut pour les marchands e-commerce
+        line_items: [
+          {
+            name: 'Nintendo Switch 2 — Pack complet',
+            quantity: 1,
+            unit_price: PRIX_CENTIMES,
+            total_amount: PRIX_CENTIMES
+          }
+        ],
+
+        // Tout ce que le webhook relira pour envoyer le Purchase à Meta
         metadata: {
           prenom,
           nom,
           email,
-          tel,
-          adresse: `${adresse}, ${cp} ${ville}`
-        },
-        description: 'Nintendo Switch 2 — Pack complet'
+          tel: tel || '',
+          adresse,
+          cp,
+          ville,
+          event_id: event_id || '',
+          fbp: fbp || '',
+          fbc: fbc || '',
+          ip,
+          user_agent: userAgent
+        }
       })
     });
-    
+
     const order = await response.json();
+
     if (!response.ok) {
-      console.error('Revolut error:', order);
-      return res.status(500).json({ error: 'Erreur création commande', details: order });
+      console.error('Revolut error:', JSON.stringify(order));
+      // On renvoie le message exact de Revolut : plus facile à diagnostiquer
+      const detail = order.message || order.error || order.code || JSON.stringify(order);
+      return res.status(500).json({ error: `Revolut : ${detail}` });
     }
-    
-    // Retourne l'URL de checkout Revolut
+
     return res.status(200).json({
       checkout_url: order.checkout_url,
       order_id: order.id
