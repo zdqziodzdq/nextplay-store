@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Commande confirmée — NEXTPLAY</title>
+
+<!-- Meta Pixel -->
+<script src="pixel.js"></script>
+
+<!-- ===== EMPLACEMENT BALISE GOOGLE ADS =====
+     Colle ici la balise de conversion fournie par Google Ads.
+     ========================================== -->
+
+<style>
+:root{
+  --ink:#0d0e12;--panel:#15171d;--panel2:#1c1f27;--paper:#f3f1ea;
+  --joy-blue:#00c3e3;--joy-red:#ff3c5c;--line:rgba(243,241,234,0.1);--muted:#9a9ea8;--green:#5be38a;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--ink);color:var(--paper);font-family:'Helvetica Neue',Arial,sans-serif;line-height:1.6;}
+a{color:inherit;text-decoration:none;}
+h1,h2{font-family:'Arial Black',Impact,sans-serif;letter-spacing:-0.02em;text-transform:uppercase;}
+
+.topbar{border-bottom:1px solid var(--line);}
+.topbar-inner{max-width:660px;margin:0 auto;padding:16px 24px;}
+.logo{font-size:18px;font-weight:900;}
+.logo span{color:var(--joy-blue);}
+
+.wrap{max-width:660px;margin:0 auto;padding:56px 24px 90px;}
+
+.check{width:64px;height:64px;border-radius:50%;background:rgba(91,227,138,.12);border:1px solid var(--green);
+  display:grid;place-items:center;font-size:30px;margin-bottom:24px;}
+h1{font-size:32px;line-height:1.05;margin-bottom:10px;}
+.lead{color:var(--muted);font-size:15px;margin-bottom:32px;}
+
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:24px;margin-bottom:16px;}
+.card-title{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;}
+.row{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:9px 0;font-size:14px;}
+.row + .row{border-top:1px solid var(--line);}
+.row .k{color:var(--muted);}
+.row .v{font-weight:700;text-align:right;}
+.price{font-family:'Arial Black',sans-serif;font-size:20px;color:var(--joy-blue);}
+.date{font-family:'Arial Black',sans-serif;font-size:20px;color:var(--green);}
+
+.steps{list-style:none;}
+.steps li{position:relative;padding:9px 0 9px 26px;font-size:14px;color:rgba(243,241,234,.85);}
+.steps li::before{content:"";position:absolute;left:0;top:17px;width:7px;height:7px;border-radius:50%;background:var(--joy-blue);}
+
+.btn{background:var(--joy-red);color:#fff;padding:15px 28px;font-weight:800;font-size:13px;letter-spacing:.05em;
+  text-transform:uppercase;border-radius:3px;display:inline-block;margin-top:8px;}
+.btn.ghost{background:none;border:1px solid var(--line);color:var(--muted);}
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:20px;}
+
+.help{font-size:13px;color:var(--muted);margin-top:34px;padding-top:22px;border-top:1px solid var(--line);}
+.help a{color:var(--joy-blue);}
+
+@media(max-width:520px){
+  .wrap{padding:40px 16px 70px;}
+  h1{font-size:25px;}
+  .card{padding:18px 16px;}
+  .actions .btn{flex:1;text-align:center;}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner"><a href="index.html" class="logo">NEXT<span>PLAY</span></a></div>
+</div>
+
+<div class="wrap">
+  <div class="check">✓</div>
+  <h1>Commande confirmée</h1>
+  <p class="lead">Merci pour ta commande. Un email de confirmation vient de partir — pense à vérifier tes spams s'il n'arrive pas.</p>
+
+  <div class="card">
+    <div class="card-title">Ta commande</div>
+    <div class="row"><span class="k">Nintendo Switch 2 — Pack complet</span><span class="v price">299 €</span></div>
+    <div class="row"><span class="k">Livraison Colissimo suivie</span><span class="v">Offerte</span></div>
+    <div class="row" id="ref-row" style="display:none;"><span class="k">Référence</span><span class="v" id="ref"></span></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📦 Livraison estimée</div>
+    <div class="date" id="delivery-date">—</div>
+    <div style="font-size:13px;color:var(--muted);margin-top:4px;" id="delivery-detail"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">La suite</div>
+    <ul class="steps">
+      <li>Ta commande est préparée et emballée sous 24h ouvrées.</li>
+      <li>Tu reçois ton numéro de suivi Colissimo par email dès l'expédition.</li>
+      <li>Livraison à ton adresse, remise contre signature.</li>
+      <li>14 jours pour changer d'avis à réception.</li>
+    </ul>
+  </div>
+
+  <div class="actions">
+    <a href="suivi-commande.html" class="btn">Suivre ma commande</a>
+    <a href="index.html" class="btn ghost">Retour à l'accueil</a>
+  </div>
+
+  <p class="help">
+    Une question sur ta commande ? Écris-nous via la <a href="contact.html">page contact</a>,
+    on répond sous 24h ouvrées. Conditions de retour détaillées sur la page
+    <a href="livraison-retours.html">Livraison &amp; retours</a>.
+  </p>
+</div>
+
+<script>
+// Référence de commande, si Revolut la transmet dans l'URL
+(function(){
+  const p = new URLSearchParams(location.search);
+  const ref = p.get('_rp_oid') || p.get('order_id') || p.get('id');
+  if(ref){
+    document.getElementById('ref').textContent = ref.slice(0,8).toUpperCase();
+    document.getElementById('ref-row').style.display = 'flex';
+  }
+})();
+
+// Date de livraison estimée (même calcul que sur la page produit)
+(function(){
+  const now = new Date();
+  let exped = new Date(now);
+  if(now.getHours() >= 14) exped.setDate(exped.getDate()+1);
+  while(exped.getDay()===0 || exped.getDay()===6) exped.setDate(exped.getDate()+1);
+  let ouvrables = 0, cursor = new Date(exped);
+  while(ouvrables < 2){
+    cursor.setDate(cursor.getDate()+1);
+    const d = cursor.getDay();
+    if(d !== 0 && d !== 6) ouvrables++;
+  }
+  const jours=['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'];
+  const mois=['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+  document.getElementById('delivery-date').textContent =
+    `${jours[cursor.getDay()]} ${cursor.getDate()} ${mois[cursor.getMonth()]}`;
+  document.getElementById('delivery-detail').textContent = 'Expédition sous 24h ouvrées · Colissimo suivi';
+})();
+</script>
+
+</body>
+</html>
