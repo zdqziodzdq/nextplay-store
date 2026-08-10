@@ -28,6 +28,8 @@ export default async function handler(req, res) {
     amount: PRIX_CENTIMES,
     currency: 'EUR',
     description: 'Nintendo Switch 2 — Pack complet',
+    // Après paiement, Revolut renvoie le client sur ta page de confirmation
+    redirect_url: 'https://nextplay-store.com/merci.html',
     customer: {
       full_name: `${prenom} ${nom}`,
       email,
