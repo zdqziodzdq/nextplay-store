@@ -1,0 +1,89 @@
+// lib/meta-capi.js — Envoi de l'événement Purchase à Meta via la Conversions API
+// ⚠️ Ce fichier est SERVEUR uniquement. Le token ne doit JAMAIS finir dans le HTML.
+// Variables d'env à créer sur Vercel (Settings → Environment Variables) :
+//   META_PIXEL_ID       = 1807278287099246
+//   META_CAPI_TOKEN     = (le NOUVEAU token, après régénération)
+//   META_TEST_EVENT_CODE = TESTxxxxx  (optionnel, uniquement pour tester)
+
+import crypto from 'crypto';
+
+const API_VERSION = process.env.META_API_VERSION || 'v21.0';
+const PIXEL_ID = process.env.META_PIXEL_ID;
+const TOKEN = process.env.META_CAPI_TOKEN;
+
+const sha256 = (v) =>
+  v ? crypto.createHash('sha256').update(String(v).trim().toLowerCase()).digest('hex') : undefined;
+
+// Téléphone FR → format E.164 sans "+" : 0612345678 → 33612345678
+function normalizePhone(tel) {
+  if (!tel) return undefined;
+  let d = String(tel).replace(/\D/g, '');
+  if (d.startsWith('0')) d = '33' + d.slice(1);
+  if (!d.startsWith('33') && d.length === 9) d = '33' + d;
+  return sha256(d);
+}
+
+/**
+ * @param {object} o
+ * @param {string} o.eventId    - MÊME id que celui envoyé par le pixel (déduplication)
+ * @param {number} o.value      - montant en euros (ex: 299)
+ * @param {object} o.customer   - { email, tel, prenom, nom, cp, ville }
+ * @param {object} o.context    - { ip, userAgent, fbp, fbc, sourceUrl }
+ */
+export async function sendPurchase({ eventId, value, customer = {}, context = {} }) {
+  if (!PIXEL_ID || !TOKEN) {
+    console.warn('[CAPI] META_PIXEL_ID ou META_CAPI_TOKEN manquant — event non envoyé');
+    return { skipped: true };
+  }
+
+  const payload = {
+    data: [
+      {
+        event_name: 'Purchase',
+        event_time: Math.floor(Date.now() / 1000),
+        event_id: eventId,                      // ← clé de la déduplication pixel/serveur
+        event_source_url: context.sourceUrl || 'https://nextplay-store.com/',
+        action_source: 'website',
+        user_data: {
+          em: sha256(customer.email),
+          ph: normalizePhone(customer.tel),
+          fn: sha256(customer.prenom),
+          ln: sha256(customer.nom),
+          ct: customer.ville ? sha256(String(customer.ville).replace(/\s/g, '')) : undefined,
+          zp: sha256(customer.cp),
+          country: sha256('fr'),
+          client_ip_address: context.ip,        // NON hashé
+          client_user_agent: context.userAgent, // NON hashé
+          fbp: context.fbp || undefined,        // NON hashé
+          fbc: context.fbc || undefined         // NON hashé
+        },
+        custom_data: {
+          currency: 'EUR',
+          value: Number(value),
+          content_ids: ['switch2-pack-nextplay'],
+          content_name: 'Nintendo Switch 2 — Pack NEXTPLAY',
+          content_type: 'product',
+          num_items: 1
+        }
+      }
+    ]
+  };
+
+  if (process.env.META_TEST_EVENT_CODE) {
+    payload.test_event_code = process.env.META_TEST_EVENT_CODE;
+  }
+
+  const res = await fetch(
+    `https://graph.facebook.com/${API_VERSION}/${PIXEL_ID}/events?access_token=${TOKEN}`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }
+  );
+
+  const json = await res.json();
+  if (!res.ok) console.error('[CAPI] Erreur Meta :', json);
+  else console.log('[CAPI] Purchase envoyé :', json);
+  return json;
+}
