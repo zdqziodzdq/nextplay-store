@@ -6,12 +6,8 @@
 <meta name="robots" content="noindex">
 <title>Commande confirmée — NEXTPLAY</title>
 
-<!-- Meta Pixel -->
+<!-- Meta Pixel + Google Ads -->
 <script src="pixel.js"></script>
-
-<!-- ===== EMPLACEMENT BALISE GOOGLE ADS =====
-     Colle ici la balise de conversion fournie par Google Ads.
-     ========================================== -->
 
 <style>
 :root{
@@ -111,14 +107,42 @@ h1{font-size:32px;line-height:1.05;margin-bottom:10px;}
 </div>
 
 <script>
+/* ============================================================
+   CONVERSION GOOGLE ADS — ACHAT
+   Remplace ci-dessous par l'étiquette que Google te donnera
+   après avoir créé l'action de conversion "Achat".
+   Elle ressemble à : AW-18336697346/AbC-D_efGhIjKlMnO
+   Tant que la ligne n'est pas remplie, rien ne se déclenche.
+   ============================================================ */
+var GOOGLE_CONVERSION_LABEL = ''; // ← à compléter
+
 // Référence de commande, si Revolut la transmet dans l'URL
-(function(){
+var refCommande = (function(){
   const p = new URLSearchParams(location.search);
-  const ref = p.get('_rp_oid') || p.get('order_id') || p.get('id');
-  if(ref){
-    document.getElementById('ref').textContent = ref.slice(0,8).toUpperCase();
+  return p.get('_rp_oid') || p.get('order_id') || p.get('id') || '';
+})();
+
+(function(){
+  if(refCommande){
+    document.getElementById('ref').textContent = refCommande.slice(0,8).toUpperCase();
     document.getElementById('ref-row').style.display = 'flex';
   }
+})();
+
+// Envoi de la conversion à Google (une seule fois par commande)
+(function(){
+  if(!GOOGLE_CONVERSION_LABEL || typeof gtag !== 'function') return;
+  try{
+    const cle = 'conv_' + (refCommande || 'sans_ref');
+    if(sessionStorage.getItem(cle)) return;   // évite le double comptage si la page est rechargée
+    sessionStorage.setItem(cle, '1');
+  }catch(e){}
+  gtag('event', 'conversion', {
+    send_to: GOOGLE_CONVERSION_LABEL,
+    value: 299.0,
+    currency: 'EUR',
+    transaction_id: refCommande
+  });
 })();
 
 // Date de livraison estimée (même calcul que sur la page produit)
