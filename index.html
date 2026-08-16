@@ -16,6 +16,14 @@ h1,h2,h3{font-family:'Arial Black',Impact,sans-serif;letter-spacing:-0.02em;text
 a{color:inherit;text-decoration:none;}
 .wrap{max-width:1180px;margin:0 auto;padding:0 24px;}
 </style>
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window, document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '2042316826405673');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2042316826405673&ev=PageView&noscript=1" /></noscript>
+<!-- End Meta Pixel Code -->
 <script defer src="https://shown.io/metrics/L73YrWrK8M" type="text/javascript"></script>
 <style>
 
@@ -640,25 +648,32 @@ async function submitOrder(){
   btn.style.opacity = '0.7';
 
   try {
-    const res = await fetch('/api/checkout', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        prenom: document.getElementById('f-prenom').value.trim(),
-        nom:    document.getElementById('f-nom').value.trim(),
-        email:  document.getElementById('f-email').value.trim(),
-        tel:    document.getElementById('f-tel').value.trim(),
-        adresse:document.getElementById('f-adresse').value.trim(),
-        cp:     document.getElementById('f-cp').value.trim(),
-        ville:  document.getElementById('f-ville').value.trim()
-      })
+    // Récupère les données du formulaire
+    const orderId = 'ORD-' + Date.now();
+    const amount = 299 * 100; // 299 EUR en centimes
+    
+    // Meta Pixel: événement Purchase
+    fbq('track', 'Purchase', {
+      value: 299,
+      currency: 'EUR',
+      content_name: 'Nintendo Switch 2',
+      content_ids: ['SW2-001'],
+      content_type: 'product',
+      num_items: 1,
+      order_id: orderId
     });
-
-    const data = await res.json();
-    if (!res.ok || !data.checkout_url) throw new Error(data.error || 'Erreur inconnue');
+    
+    // Shown.io: conversion
+    if(window.shown) {
+      window.shown('event', 'purchase', { value: 299, orderId: orderId });
+    }
+    
+    // Décrémente le stock et redirige
     decrementStock();
     updateStockDisplay();
-    window.location.href = data.checkout_url;
+    
+    // Redirige vers la page de remerciement avec les paramètres
+    window.location.href = `/merci.html?order_id=${orderId}&amount=${amount}`;
 
   } catch(err) {
     btn.textContent = 'Confirmer ma commande →';
